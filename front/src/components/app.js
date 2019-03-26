@@ -16,6 +16,7 @@ import IntegrationPage from '../routes/integration';
 import ChatPage from '../routes/chat';
 import MapPage from '../routes/map';
 import CalendarPage from '../routes/calendar';
+import ScenePage from '../routes/scene';
 
 // Integrations
 import TelegramPage from '../routes/integration/all/telegram';
@@ -62,6 +63,8 @@ const Main = connect('currentUrl,user', actions)(
           <ChatPage path="/dashboard/chat" />
           <MapPage path="/dashboard/maps" />
           <CalendarPage path="/dashboard/calendar" />
+          <ScenePage path="/dashboard/scene" />
+          <ScenePage path="/dashboard/scene/edit/:scene?" />
         </Router>
       </Layout>
     </div>

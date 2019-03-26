@@ -1,0 +1,108 @@
+[
+    {
+        "selector":"wake - up - tony",
+        "name": "Wake up Tony",
+        "description": "Scene when user tony wake up.",
+        "icon": "user",
+        "actions": [{
+            "type": "devicetype.turn-on",
+            "selector": "room.bedroom.light.binary",
+            "value": 1,
+            "then": [{
+                "type": "delay",
+                "duration_in_seconds": 10,
+                "then": [{
+                        "type": "speak",
+                        "selector": "room.bedroom.pod",
+                        "text": "Hello Tony !",
+                        "then": [{
+                            "if": {
+                                "type": "sun.sunrise",
+                                "selector": "house.malibu-house",
+                                "so": [{
+                                        "type": "rolling-shutter.open",
+                                        "selector": "room.all.rolling-shutter.open",
+                                        "value": "open"
+                                    },
+                                    {
+                                        "type": "devicetype.turn-off",
+                                        "selector": "room.bedroom.light.binary",
+                                        "value": 0
+                                    },
+                                    {
+                                        "type": "speak",
+                                        "selector": "room.bedroom.pod",
+                                        "text": "In Malibu it is 22 degrees, the sky is slightly overcast. The weather is ideal for surfing."
+                                    }
+                                ]
+                            },
+                            "type": "dashboard.display",
+                            "selector": "dashboard.portable",
+                            "data": "{day}, {hour}, {weather}, {armor.state}, {armor.manufacturing.state}, {calendar.day}, {stock-market.stark-industries}"
+                        }]
+                    },
+                    {
+                        "type": "music.play",
+                        "selector": "room.all.harman-kardon",
+                        "value": "playlist-yyyy"
+                    }
+                ]
+            }]},
+            {"type": "devicetype.set-value",
+            "selector": "room.bathroom.shower.multilevel",
+            "value": 26,
+            "then": [{
+                "type": "speak",
+                "selector": "room.bedroom.pod",
+                "text": "Your shower is ready",
+                "then": [{
+                    "type": "devicetype.turn-on",
+                    "selector": "room.bathroom.light.binary",
+                    "value": 1
+                }],
+                "then": [{
+                    "type": "delay",
+                    "duration_in_minutes": 20,
+                    "then": [{
+                        "type": "devicetype.turn-on",
+                        "selector": "room.kitchen.coffee-machine.binary",
+                        "value": 1,
+                        "then": [{
+                            "type": "speak",
+                            "selector": "room.bathroom.pod",
+                            "text": "I put your coffee to heat sir"
+                        }]
+                    }]
+                }]
+            }]
+        }]
+    },
+    {
+        "selector":"house - mode - cinema",
+        "name": "Cinema",
+        "description": "Scene when house go to cinema mode.",
+        "icon": "home",
+        "actions":[{}]
+    },
+    {
+        "selector":"going - sleep - tony",
+        "name": "Tony going to sleep",
+        "description": "Scene when user tony go to sleep.",
+        "icon": "user",
+        "actions":[{}]
+    },
+    {
+        "selector":"moon - house - night",
+        "name": "Night",
+        "description": "Scene when it's night at house.",
+        "icon": "moon",
+        "actions":[{}]
+    },
+    {
+        "selector":"sun - house - day",
+        "name": "Sun",
+        "description": "Scene when it's sunny at house.",
+        "icon": "sun",
+        "actions":[{}]
+    }
+]
