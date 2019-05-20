@@ -26,6 +26,11 @@ Start the server (dev):
 npm start
 ```
 
+Start the front (dev):
+```
+npm run -s dev --prefix ./front
+```
+
 ## Running tests
 
 To run tests:
