@@ -51,15 +51,15 @@ const SonosPage = ({ children, ...props }) => (
                       <h3>
                         <Text id="integration.sonos.devicesListTitle" />
                       </h3>
-                      {props.bridges && (
+                      {props.devices && (
                         <p><Text id="integration.sonos.clickToggleDescription" /></p>
                       )}
                       <div class="card-columns">
-                        {props.bridges &&
-                          props.bridges.map((bridge, index) => (
+                        {props.devices &&
+                          props.devices.map((device, index) => (
                             <div class="card">
                               <div class="card-header">
-                                <h3 class="card-title">{bridge.name}</h3>
+                                <h3 class="card-title">{device.name}</h3>
                                 <div class="card-options">
                                   <label class="custom-switch m-0">
                                     <input type="checkbox" value="0" class="custom-switch-input" />
@@ -68,13 +68,13 @@ const SonosPage = ({ children, ...props }) => (
                                 </div>
                               </div>
                               <div class="card-body">
-                                <b><Text id="integration.sonos.ipAddress" /></b> {bridge.ipaddress}
+                                <b><Text id="integration.sonos.ipAddress" /></b> {device.ip}
                               </div>
                             </div>
                           ))}
                       </div>
                       <dib class="form-group">
-                        <button class="btn btn-info btn-sm" onClick={props.getBridges}>
+                        <button class="btn btn-info btn-sm" onClick={props.getDevices}>
                           <Text id="integration.sonos.searchForDevicesButton" /> <i class="fe fe-radio" />
                         </button>
                       </dib>

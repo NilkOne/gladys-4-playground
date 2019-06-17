@@ -11,10 +11,12 @@ import integrationConfig from '../../../../config/integrations';
 class SonoIntegration extends Component {
   componentWillMount() {}
 
-  render({ user }, {}) {
+  render({ user, getDevices, devices }, {}) {
     return (
       <SonosPage
         integration={integrationConfig[user.language].sonos}
+        getDevices={getDevices}
+        devices={devices}
       />
     );
   }

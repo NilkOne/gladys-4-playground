@@ -21,7 +21,7 @@ function getDevices() {
     });
     
     // TODO : use real data instead mock
-    const devices = [{ip:'192.168.1.98'}, {ip:'192.168.1.99'}];
+    const devices = [{name:'Living Room', ip:'192.168.1.98'}, {name:'Bath Room', ip:'192.168.1.99'}];
     
     logger.info(`SonosService: Found ${devices.length} devices`);
     

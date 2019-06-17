@@ -1,21 +1,21 @@
 const actions = store => ({
-  // async getBridges(state) {
-  //   store.setState({
-  //     philipsHueGetBridgesStatus: PhilipsHueGetBridgesStatus.Getting
-  //   });
-  //   try {
-  //     const bridges = await state.httpClient.get('/api/v1/service/philips-hue/bridge');
-  //     store.setState({
-  //       bridges,
-  //       philipsHueGetBridgesStatus: PhilipsHueGetBridgesStatus.Success
-  //     });
-  //   } catch (e) {
-  //     store.setState({
-  //       philipsHueGetBridgesStatus: PhilipsHueGetBridgesStatus.Error,
-  //       philipsHueGetBridgeError: e.message
-  //     });
-  //   }
-  // }
+  async getDevices(state) {
+    // store.setState({
+    //   sonosGetDevicesStatus: SonosGetDevicesStatus.Getting
+    // });
+    try {
+      const devices = await state.httpClient.get('/api/v1/service/sonos/devices');
+      // store.setState({
+      //   devices,
+      //   sonosGetDevicesStatus: SonosGetDevicesStatus.Success
+      // });
+    } catch (e) {
+      // store.setState({
+      //   sonosGetDevicesStatus: SonosGetDevicesStatus.Error,
+      //   sonosGetDevicesError: e.message
+      // });
+    }
+  }
 });
 
 export default actions;
