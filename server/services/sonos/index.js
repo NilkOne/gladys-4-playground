@@ -1,5 +1,6 @@
 const logger = require('../../utils/logger');
 const SonosMusicHandler = require('./lib/music');
+const SonosController = require('./api/sonos.controller');
 
 module.exports = function SonosService(gladys) {
   // here is Sonos module
@@ -30,5 +31,6 @@ module.exports = function SonosService(gladys) {
     start,
     stop,
     music: sonosMusicHandler,
+    controllers: SonosController(sonosMusicHandler)
   });
 };
