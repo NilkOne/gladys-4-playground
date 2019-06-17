@@ -13,15 +13,15 @@ function getDevices() {
         throw new Error(`Sonos API not initialized`);
     }
 
-    const DeviceDiscovery  = this.sonosApi.DeviceDiscovery;
+    const DeviceDiscovery = this.sonosApi.DeviceDiscovery;
     
     DeviceDiscovery({ timeout: 10000 }, (device) => {
-        let ipAddress = device.host;
-        logger.log('SonosService: Found device at ' + ipAddress);
+        const ipAddress = device.host;
+        logger.log('SonosService: Found device at {0}', ipAddress);
     });
     
     // TODO : use real data instead mock
-    let devices = [{ip:'192.168.1.98'}, {ip:'192.168.1.99'}];
+    const devices = [{ip:'192.168.1.98'}, {ip:'192.168.1.99'}];
     
     logger.info(`SonosService: Found ${devices.length} devices`);
     

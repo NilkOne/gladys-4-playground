@@ -12,7 +12,7 @@ function play(deviceIp) {
         throw new Error(`Sonos API not initialized`);
     }
     
-    const Sonos  = this.sonosApi.Sonos;
+    const Sonos = this.sonosApi.Sonos;
     const device = new Sonos(deviceIp);
     return device.play();
 }
