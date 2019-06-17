@@ -1,3 +1,4 @@
+const { getDevices } = require('./music.getDevices');
 const play = require('./music.play');
 const pause = require('./music.pause');
 
@@ -13,6 +14,7 @@ const SonosMusicHandler = function SonosMusicHandler(gladys, sonosApi) {
     this.sonosApi = sonosApi;  
 };
 
+SonosMusicHandler.prototype.getDevices = getDevices;
 SonosMusicHandler.prototype.play = play;
 SonosMusicHandler.prototype.pause = pause;
 

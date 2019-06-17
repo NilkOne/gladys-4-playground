@@ -1,9 +1,10 @@
-// const logger = require('../../utils/logger');
+const logger = require('../../utils/logger');
 const SonosMusicHandler = require('./lib/music');
 
 module.exports = function SonosService(gladys) {
   // here is Sonos module
   const sonosApi = require('sonos');
+  const sonosMusicHandler = new SonosMusicHandler(gladys, sonosApi);
 
   /**
    * @public
@@ -12,8 +13,7 @@ module.exports = function SonosService(gladys) {
    * gladys.services.sonos.start();
    */
   async function start() {
-    // logger.log('starting sonos service');
-    console.log('starting sonos service');
+    logger.log('starting sonos service');
   }
 
   /**
@@ -23,13 +23,12 @@ module.exports = function SonosService(gladys) {
    * gladys.services.sonos.stop();
    */
   async function stop() {
-    // logger.log('stopping sonos service');
-    console.log('stopping sonos service');
+    logger.log('stopping sonos service');
   }
 
   return Object.freeze({
     start,
     stop,
-    music: new SonosMusicHandler(gladys, sonosApi),
+    music: sonosMusicHandler,
   });
 };

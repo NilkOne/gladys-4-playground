@@ -20,4 +20,7 @@ const SonosService = proxyquire('../../../services/sonos/index', {
 console.log('Test manuel');
 const sonosService = SonosService();
 const deviceIp = "192.168.1.99";
-sonosService.music.play(deviceIp);
+sonosService.music.pause(deviceIp);
+
+sonosService.music.getDevices();
+console.log('Fin du test manuel');
