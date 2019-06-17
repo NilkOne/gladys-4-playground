@@ -1,33 +1,36 @@
-const dateDisplayOptions = {
-  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-};
+import { Text } from 'preact-i18n';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 const SessionDevice = ({ children, ...props }) => {
-  
-  let revokeDevice = (e) => {
+  let revokeSession = e => {
     e.preventDefault();
-    props.revokeDevice(props.device.id, props.index);
+    props.revokeSession(props.session.id, props.index);
   };
-
-  let createdAt = new Date(props.device.created_at).toLocaleDateString('en-US', dateDisplayOptions);
-  let lastSeen = new Date(props.device.last_seen).toLocaleDateString('en-US', dateDisplayOptions);
 
   return (
     <tr>
       <td>
-        <div style="max-width: 400px; overflow: hidden">{props.device.name}</div>
+        <div style="max-width: 400px; overflow: hidden">
+          {props.session.token_type === 'refresh_token' && <Text id="sessionsSettings.device" />}
+          {props.session.token_type === 'api_key' && <Text id="sessionsSettings.apiKey" />}
+        </div>
         <div class="small text-muted">
-          Registered: {createdAt}
+          <Text id="sessionsSettings.registered" />:{' '}
+          {dayjs(props.session.created_at)
+            .locale(props.user.language)
+            .fromNow()}
         </div>
       </td>
       <td>
-        <div class="small text-muted">Last seen</div>
-        <div>{lastSeen}</div>
-      </td>
-      <td >
-        <i style={{
-          cursor: 'pointer' 
-        }} onClick={revokeDevice} class="fe fe-trash-2"
+        <i
+          style={{
+            cursor: 'pointer'
+          }}
+          onClick={revokeSession}
+          class="fe fe-trash-2"
         />
       </td>
     </tr>

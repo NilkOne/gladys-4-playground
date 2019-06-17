@@ -38,6 +38,6 @@ describe('message.replyByIntent', () => {
       'light.turn-on.success',
       {},
     );
-    assert.calledWith(send, 'XXXX', 'this is the reply!');
+    assert.calledWith(send, 'XXXX');
   });
 });

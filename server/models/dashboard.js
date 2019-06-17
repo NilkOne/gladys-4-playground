@@ -8,7 +8,10 @@ const boxesSchema = Joi.array().items(
       type: Joi.string()
         .valid(DASHBOARD_BOX_TYPE_LIST)
         .required(),
+      house: Joi.string(),
       room: Joi.string(),
+      camera: Joi.string(),
+      name: Joi.string(),
     }),
   ),
 );

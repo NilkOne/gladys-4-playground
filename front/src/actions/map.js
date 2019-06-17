@@ -1,34 +1,40 @@
-import leaflet from 'leaflet';
-
-/* const icon = leaflet.icon({
-  iconUrl: '/assets/leaflet/marker-icon.png',
-  iconRetinaUrl: '/assets/leaflet/marker-icon-2x.png',
-  shadowUrl: '/assets/leaflet/marker-shadow.png',
-  iconSize: [25,41],
-  iconAnchor: [12,41],
-  popupAnchor: [1,-34],
-  tooltipAnchor: [16,-28],
-  shadowSize: [41,41]
-}); */
+import { RequestStatus } from '../utils/consts';
 
 function createActions(store) {
   const actions = {
-    async initLeafletMap(state) {
-      if (state.mapTabLeafletMap) {
-        state.mapTabLeafletMap.remove();
-      }
-      const leafletMap = leaflet.map('map-tab-leaflet').setView([48.8583, 2.2945], 2);
-      leaflet
-        .tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://cartodb.com/attributions">CartoDB</a>',
-          subdomains: 'abcd',
-          maxZoom: 19
-        })
-        .addTo(leafletMap);
+    async getUsersWithLocation(state) {
       store.setState({
-        mapTabLeafletMap: leafletMap
+        GetUsersWithlocationStatus: RequestStatus.Getting
       });
+      try {
+        const usersWithLocation = await state.httpClient.get(
+          '/api/v1/user?fields=id,firstname,selector,picture,last_latitude,last_longitude,last_altitude,last_accuracy,last_location_changed'
+        );
+        store.setState({
+          usersWithLocation,
+          GetUsersWithlocationStatus: RequestStatus.Success
+        });
+      } catch (e) {
+        store.setState({
+          GetUsersWithlocationStatus: RequestStatus.Error
+        });
+      }
+    },
+    async getHousesWithLocation(state) {
+      store.setState({
+        getHousesWithLocation: RequestStatus.Getting
+      });
+      try {
+        const housesWithLocation = await state.httpClient.get('/api/v1/house');
+        store.setState({
+          housesWithLocation,
+          getHousesWithLocation: RequestStatus.Success
+        });
+      } catch (e) {
+        store.setState({
+          getHousesWithLocation: RequestStatus.Error
+        });
+      }
     }
   };
   return actions;

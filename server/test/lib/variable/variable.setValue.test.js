@@ -14,6 +14,26 @@ describe('variable.setValue', () => {
     expect(result).to.have.property('name', 'SECURE_VARIABLE');
     expect(result).to.have.property('value', 'NEW_VALUE');
   });
+  it('should return a new user variable created', async () => {
+    const result = await variable.setValue(
+      'CALENDAR_USERNAME',
+      'xxxx@yyyy.com',
+      'a810b8db-6d04-4697-bed3-c4b72c996279',
+      '0cd30aef-9c4e-4a23-88e3-3547971296e5',
+    );
+    expect(result).to.have.property('name', 'CALENDAR_USERNAME');
+    expect(result).to.have.property('value', 'xxxx@yyyy.com');
+  });
+  it('should update an existing user variable', async () => {
+    const result = await variable.setValue(
+      'USER_SECURE_VARIABLE',
+      'NEW_USER_VALUE',
+      'a810b8db-6d04-4697-bed3-c4b72c996279',
+      '0cd30aef-9c4e-4a23-88e3-3547971296e5',
+    );
+    expect(result).to.have.property('name', 'USER_SECURE_VARIABLE');
+    expect(result).to.have.property('value', 'NEW_USER_VALUE');
+  });
   it('should create global variable', async () => {
     const result = await variable.setValue('SECURE_VARIABLE', 'NEW_VALUE');
     expect(result).to.have.property('name', 'SECURE_VARIABLE');

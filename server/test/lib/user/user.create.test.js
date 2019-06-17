@@ -5,10 +5,15 @@ const StateManager = require('../../../lib/state');
 
 const event = new EventEmitter();
 
+const variable = {
+  getValue: () => Promise.resolve(null),
+  setValue: () => Promise.resolve(null),
+};
+
 const stateManager = new StateManager(event);
 
 describe('user.create', () => {
-  const user = new User({}, stateManager);
+  const user = new User({}, stateManager, variable);
   it('should create user', async () => {
     const createdUser = await user.create({
       firstname: 'Tony',

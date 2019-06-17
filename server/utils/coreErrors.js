@@ -26,6 +26,13 @@ class ServiceNotConfiguredError extends Error {
   }
 }
 
+class PlatformNotCompatible extends Error {
+  constructor(message) {
+    super();
+    this.message = message;
+  }
+}
+
 class BadParameters extends Error {
   constructor(message) {
     super();
@@ -39,4 +46,5 @@ module.exports = {
   ServiceNotConfiguredError,
   BadParameters,
   NoValuesFoundError,
+  PlatformNotCompatible,
 };

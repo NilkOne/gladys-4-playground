@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const { expect, assert } = require('chai');
 
 const Service = require('../../../lib/service');
 const StateManager = require('../../../lib/state');
@@ -29,5 +29,13 @@ describe('service', () => {
   it('should return service with message capabilities', async () => {
     const messageServices = await service.getMessageServices();
     expect(messageServices).to.be.instanceOf(Array);
+  });
+  it('should return service by name', async () => {
+    const testService = await service.getByName('test-service');
+    expect(testService).to.have.property('name', 'test-service');
+  });
+  it('should throw service not found', async () => {
+    const promise = service.getByName('not-found');
+    return assert.isRejected(promise, 'SERVICE_NOT_FOUND');
   });
 });

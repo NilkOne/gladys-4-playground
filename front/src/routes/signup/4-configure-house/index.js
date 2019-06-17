@@ -10,26 +10,16 @@ import 'leaflet/dist/leaflet.css';
   actions
 )
 class ConfigureHouse extends Component {
-
+  componentWillMount() {
+    this.props.initRoomList();
+  }
   componentDidMount() {
     this.props.initLeafletMap();
   }
-
-  render({ saveHouse, onKeyPressRoomInput, updateNewHouseName, updateNewRoomName, addRoom, removeRoom, signupRooms, signupNewHouseName, signupNewRoomName, signupConfigureHouseErrors }, { }) {
+  render(props, {}) {
     return (
       <SignupLayout>
-        <ConfigureHouseTab
-          saveHouse={saveHouse}
-          onKeyPressRoomInput={onKeyPressRoomInput}
-          updateNewHouseName={updateNewHouseName}
-          updateNewRoomName={updateNewRoomName}
-          addRoom={addRoom}
-          removeRoom={removeRoom}
-          signupRooms={signupRooms}
-          signupNewHouseName={signupNewHouseName}
-          signupNewRoomName={signupNewRoomName}
-          signupConfigureHouseErrors={signupConfigureHouseErrors}
-        />
+        <ConfigureHouseTab {...props} />
       </SignupLayout>
     );
   }

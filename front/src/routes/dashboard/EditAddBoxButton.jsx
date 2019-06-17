@@ -17,6 +17,7 @@ const EditAddBoxButton = ({ children, ...props }) => (
   <div class="row" style={marginBottom30px}>
     <div class="col-8">
       <select onChange={updateNewSelectedBox(props.updateNewSelectedBox, props.x)} class="form-control">
+        <option>-------</option>
         {DASHBOARD_BOX_TYPE_LIST.map(dashboardBoxType => (
           <option value={dashboardBoxType}>
             <Text id={'dashboard.boxTitle.' + dashboardBoxType} />

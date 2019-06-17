@@ -1,5 +1,5 @@
 const asyncMiddleware = require('./asyncMiddleware');
-const { Error401 } = require('../../utils/httpErrors');
+const { Error403 } = require('../../utils/httpErrors');
 
 module.exports = function IsInstanceConfiguredMiddleware(gladys) {
   return asyncMiddleware(async (req, res, next) => {
@@ -7,7 +7,7 @@ module.exports = function IsInstanceConfiguredMiddleware(gladys) {
     if (numberOfUsers === 0) {
       next();
     } else {
-      throw new Error401('INSTANCE_ALREADY_CONFIGURED');
+      throw new Error403('INSTANCE_ALREADY_CONFIGURED');
     }
   });
 };

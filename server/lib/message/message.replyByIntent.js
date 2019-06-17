@@ -7,12 +7,13 @@
  * @param {Object} originalMessage.user - The user asking.
  * @param {string} intent - The intent to send.
  * @param {Object} context - The context of the reply.
+ * @param {string} [file] - An optional file to send with the message.
  * @example
  * message.replyByIntent('en','light.turn-on.success',{ deviceFeature: {name: 'test'} },'telegram', 'XXXX');
  */
-async function replyByIntent(originalMessage, intent, context) {
+async function replyByIntent(originalMessage, intent, context, file) {
   const text = this.brain.getReply(originalMessage.language, intent, context);
-  await this.reply(originalMessage, text);
+  await this.reply(originalMessage, text, context, file);
 }
 
 module.exports = {

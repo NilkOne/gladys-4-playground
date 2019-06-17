@@ -7,7 +7,9 @@ const StateManager = require('../../../lib/state');
 const event = new EventEmitter();
 
 const testService = {
-  poll: fake.resolves(true),
+  device: {
+    poll: fake.resolves(true),
+  },
 };
 
 describe('Device', () => {

@@ -43,6 +43,16 @@ describe('session.getAccessToken', () => {
     const res = await session.getAccessToken('refresh-token-test', ['dashboard:read']);
     expect(res).to.have.property('access_token');
   });
+  it('should return bad request error, refresh token is null', async () => {
+    const session = new Session('secret');
+    const promise = session.getAccessToken(null, ['dashboard:read']);
+    return assert.isRejected(promise);
+  });
+  it('should return bad request error, refresh token is empty', async () => {
+    const session = new Session('secret');
+    const promise = session.getAccessToken('', ['dashboard:read']);
+    return assert.isRejected(promise);
+  });
   it('should return error, expired refresh token', async () => {
     const session = new Session('secret');
     const promise = session.getAccessToken('refresh-token-test-expired', ['dashboard:read']);

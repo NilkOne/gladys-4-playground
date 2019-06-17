@@ -30,6 +30,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.TEXT,
       },
+      file: {
+        allowNull: true,
+        type: Sequelize.TEXT,
+      },
       conversation_id: {
         allowNull: false,
         type: Sequelize.UUID,

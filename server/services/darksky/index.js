@@ -1,6 +1,8 @@
 const logger = require('../../utils/logger');
 const { ServiceNotConfiguredError } = require('../../utils/coreErrors');
 const { formatResults } = require('./lib/formatResults');
+const { Error400 } = require('../../utils/httpErrors');
+const { ERROR_MESSAGES } = require('../../utils/constants');
 
 const DARK_SKY_API_KEY = 'DARK_SKY_API_KEY';
 
@@ -39,7 +41,7 @@ module.exports = function DarkSkyService(gladys, serviceId) {
    * @param {number} options.longitude - The longitude to get the weather from.
    * @param {number} options.offset - Get weather in the future, offset is in hour.
    * @param {string} [options.language] - The language of the report.
-   * @param {string} [options.units] - Units of the weather [auto, si, us].
+   * @param {string} [options.units] - Unit of the weather [auto, si, us].
    * @example
    * gladys.services.darksky.weather.get({
    *   latitude: 112,
@@ -62,9 +64,13 @@ module.exports = function DarkSkyService(gladys, serviceId) {
       throw new ServiceNotConfiguredError('Dark Sky API Key not found');
     }
     const url = `https://api.darksky.net/forecast/${darkSkyApiKey}/${latitude},${longitude}?language=${language}&units=${units}`;
-    const { data } = await axios.get(url);
-    const weatherFormatted = formatResults(optionsMerged, data);
-    return weatherFormatted;
+    try {
+      const { data } = await axios.get(url);
+      const weatherFormatted = formatResults(optionsMerged, data);
+      return weatherFormatted;
+    } catch (e) {
+      throw new Error400(ERROR_MESSAGES.REQUEST_TO_THIRD_PARTY_FAILED);
+    }
   }
 
   return Object.freeze({

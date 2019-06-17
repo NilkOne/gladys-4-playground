@@ -1,5 +1,6 @@
 const asyncMiddleware = require('../middlewares/asyncMiddleware');
 const { Error400 } = require('../../utils/httpErrors');
+const { ERROR_MESSAGES } = require('../../utils/constants');
 
 module.exports = function WeatherController(gladys) {
   /**
@@ -46,7 +47,7 @@ module.exports = function WeatherController(gladys) {
   async function getByHouse(req, res) {
     const house = await gladys.house.getBySelector(req.params.house_selector);
     if (!house.latitude || !house.longitude) {
-      throw new Error400('House has not latitude/longitude specified.');
+      throw new Error400(ERROR_MESSAGES.HOUSE_HAS_NO_COORDINATES);
     }
     const options = {
       latitude: house.latitude,
@@ -54,7 +55,9 @@ module.exports = function WeatherController(gladys) {
       language: req.user.language,
     };
     const weatherResult = await gladys.weather.get(options);
-    res.json(weatherResult);
+    weatherResult.house = house;
+    const responseWithHouseAndOptions = Object.assign({}, weatherResult, { house }, { options });
+    res.json(responseWithHouseAndOptions);
   }
 
   return Object.freeze({

@@ -1,24 +1,21 @@
 import { h } from 'preact';
 import { Link } from 'preact-router/match';
+import { isUrlInArray } from '../../utils/url';
 
 const PAGES_WITHOUT_HEADER = [
   '/login',
-  '/login/blockstack',
   '/signup',
   '/signup/create-account-local',
   '/signup/create-account-gladys-gateway',
-  '/signup/create-account-blockstack',
   '/signup/preference',
   '/signup/configure-house',
-  '/signup/success'
+  '/signup/success',
+  '/forgot-password',
+  '/reset-password'
 ];
 
 const Header = ({ ...props }) => {
-  let url = props.currentUrl.split('?')[0];
-  if (url.substring(url.length-1) === '/') {
-    url = url.substring(0, url.length-1);
-  }
-  if (PAGES_WITHOUT_HEADER.includes(url)) {
+  if (isUrlInArray(props.currentUrl, PAGES_WITHOUT_HEADER)) {
     return null;
   }
   return (
@@ -32,26 +29,16 @@ const Header = ({ ...props }) => {
             </a>
             <div class="d-flex order-lg-2 ml-auto">
               <div class={'dropdown' + (props.showDropDown && ' show')}>
-                <a
-                  onClick={props.toggleDropDown}
-                  class="nav-link pr-0 leading-none"
-                  data-toggle="dropdown"
-                >
-                  <span
-                    class="avatar"
-                    style={`background-image: url(${props.profilePicture})`}
-                  />
+                <a onClick={props.toggleDropDown} class="nav-link pr-0 leading-none" data-toggle="dropdown">
+                  <span class="avatar" style={`background-image: url(${props.profilePicture})`} />
                   <span class="ml-2 d-none d-lg-block">
                     <span class="text-default">{props.user.firstname}</span>
-                    <small class="text-muted d-block mt-1">{props.user.role === 'admin' ? 'Administrator' : 'User' }</small>
+                    <small class="text-muted d-block mt-1">
+                      {props.user.role === 'admin' ? 'Administrator' : 'User'}
+                    </small>
                   </span>
                 </a>
-                <div
-                  class={
-                    'dropdown-menu dropdown-menu-right dropdown-menu-arrow' +
-                  (props.showDropDown && ' show')
-                  }
-                >
+                <div class={'dropdown-menu dropdown-menu-right dropdown-menu-arrow' + (props.showDropDown && ' show')}>
                   <a class="dropdown-item" href="/dashboard/profile">
                     <i class="dropdown-icon fe fe-user" /> Profile
                   </a>
@@ -79,10 +66,7 @@ const Header = ({ ...props }) => {
           </div>
         </div>
       </div>
-      <div
-        class={'header collapse d-lg-flex p-0 ' + (props.showCollapsedMenu && ' show')}
-        id="headerMenuCollapse"
-      >
+      <div class={'header collapse d-lg-flex p-0 ' + (props.showCollapsedMenu && ' show')} id="headerMenuCollapse">
         <div class="container">
           <div class="row align-items-center">
             <div class="col-lg order-lg-first">
@@ -103,7 +87,10 @@ const Header = ({ ...props }) => {
                   </Link>
                 </li>
                 <li class="nav-item">
-                  <Link href="/dashboard/integration/device" class={props.currentUrl.startsWith('/dashboard/integration') ? 'active nav-link' : 'nav-link'}>
+                  <Link
+                    href="/dashboard/integration/device"
+                    class={props.currentUrl.startsWith('/dashboard/integration') ? 'active nav-link' : 'nav-link'}
+                  >
                     <i class="fe fe-grid" /> Integrations
                   </Link>
                 </li>
@@ -118,12 +105,18 @@ const Header = ({ ...props }) => {
                   </Link>
                 </li>
                 <li class="nav-item">
-                  <Link href="/dashboard/scene" class={props.currentUrl.startsWith('/dashboard/scene') ? 'active nav-link' : 'nav-link'}>
+                  <Link
+                    href="/dashboard/scene"
+                    class={props.currentUrl.startsWith('/dashboard/scene') ? 'active nav-link' : 'nav-link'}
+                  >
                     <i class="fe fe-play" /> Scene
                   </Link>
                 </li>
                 <li class="nav-item">
-                  <Link href="/dashboard/trigger" class={props.currentUrl.startsWith('/dashboard/trigger') ? 'active nav-link' : 'nav-link'}>
+                  <Link
+                    href="/dashboard/trigger"
+                    class={props.currentUrl.startsWith('/dashboard/trigger') ? 'active nav-link' : 'nav-link'}
+                  >
                     <i class="fe fe-zap" /> Trigger
                   </Link>
                 </li>
@@ -132,7 +125,8 @@ const Header = ({ ...props }) => {
           </div>
         </div>
       </div>
-    </div>);
+    </div>
+  );
 };
 
 export default Header;

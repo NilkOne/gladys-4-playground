@@ -33,3 +33,15 @@ describe('POST /api/v1/service/:service_name/stop', () => {
       });
   });
 });
+
+describe('GET /api/v1/service/:service_name', () => {
+  it('should get a service by name', async () => {
+    await authenticatedRequest
+      .get('/api/v1/service/test-service')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((res) => {
+        expect(res.body).to.have.property('name', 'test-service');
+      });
+  });
+});

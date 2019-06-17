@@ -10,7 +10,7 @@ const addActionToColumn = (columnIndex, addAction) => () => {
 
 const ActionColumn = ({ children, ...props }) => (
   <div class="col-lg-4">
-    <h4 class="text-center">{props.index === 0 ? 'First' : 'Then'}</h4>
+    <h4 class="text-center">{props.index === 0 ? <Text id="editScene.first" /> : <Text id="editScene.then" />}</h4>
     <hr />
     {props.actions.map((action, index) => (
       <ActionCard
@@ -26,6 +26,7 @@ const ActionColumn = ({ children, ...props }) => (
     <div class="row">
       <div class="col-md-8">
         <select onChange={props.updateSelectedNewAction} class="form-control">
+          <option>-------</option>
           {ACTION_LIST.map(actionType => (
             <option value={actionType}>
               <Text id={`editScene.actions.${actionType}`} />

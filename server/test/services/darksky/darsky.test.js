@@ -1,14 +1,22 @@
-const { expect } = require('chai');
+const { expect, assert } = require('chai');
 const proxyquire = require('proxyquire').noCallThru();
 const weatherExample = require('./weather.json');
 
-const DarkSkyService = proxyquire('../../../services/darksky/index', {
+const workingAxios = {
   axios: {
     default: {
       get: () => ({ data: weatherExample }),
     },
   },
-});
+};
+
+const brokenAxios = {
+  axios: {
+    default: {
+      get: () => Promise.reject(new Error('broken')),
+    },
+  },
+};
 
 const gladys = {
   variable: {
@@ -17,14 +25,20 @@ const gladys = {
 };
 
 describe('DarkSkyService', () => {
-  const darkSkyService = DarkSkyService(gladys, '35deac79-f295-4adf-8512-f2f48e1ea0f8');
   it('should start service', async () => {
+    const DarkSkyService = proxyquire('../../../services/darksky/index', workingAxios);
+    const darkSkyService = DarkSkyService(gladys, '35deac79-f295-4adf-8512-f2f48e1ea0f8');
     await darkSkyService.start();
   });
   it('should stop service', async () => {
+    const DarkSkyService = proxyquire('../../../services/darksky/index', workingAxios);
+    const darkSkyService = DarkSkyService(gladys, '35deac79-f295-4adf-8512-f2f48e1ea0f8');
     await darkSkyService.stop();
   });
   it('should return weather formatted', async () => {
+    const DarkSkyService = proxyquire('../../../services/darksky/index', workingAxios);
+    const darkSkyService = DarkSkyService(gladys, '35deac79-f295-4adf-8512-f2f48e1ea0f8');
+    await darkSkyService.start();
     const weather = await darkSkyService.weather.get({
       latitude: 12,
       longitude: 10,
@@ -38,5 +52,15 @@ describe('DarkSkyService', () => {
       wind_speed: 5.25,
       weather: 'cloud',
     });
+  });
+  it('should return error, unable to contact third party provider', async () => {
+    const DarkSkyService = proxyquire('../../../services/darksky/index', brokenAxios);
+    const darkSkyService = DarkSkyService(gladys, '35deac79-f295-4adf-8512-f2f48e1ea0f8');
+    await darkSkyService.start();
+    const promise = darkSkyService.weather.get({
+      latitude: 12,
+      longitude: 10,
+    });
+    return assert.isRejected(promise, 'REQUEST_TO_THIRD_PARTY_FAILED');
   });
 });

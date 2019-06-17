@@ -72,7 +72,7 @@ describe('Camera.setImage', () => {
       ],
     });
     let bigImage = 'image/png;base64,';
-    while (bigImage.length < 51 * 1024) {
+    while (bigImage.length < 76 * 1024) {
       bigImage += 'lkmlklkmlklsjfksdjflkdsjkj';
     }
     const promise = deviceManager.camera.setImage('test-camera', bigImage);

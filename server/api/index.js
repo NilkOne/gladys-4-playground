@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const compression = require('compression');
 const WebSocket = require('ws');
 const path = require('path');
 const errorMiddleware = require('./middlewares/errorMiddleware');
@@ -20,6 +21,9 @@ const STATIC_FOLDER = path.join(__dirname, '/../static');
  */
 function start(gladys, port, options) {
   const app = express();
+
+  // compress all response
+  app.use(compression());
 
   // parse json
   app.use(express.json());

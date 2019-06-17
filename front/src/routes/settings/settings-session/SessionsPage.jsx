@@ -1,3 +1,5 @@
+import { Text } from 'preact-i18n';
+
 import SettingsLayout from '../SettingsLayout';
 import SessionDevice from './SessionDevice';
 
@@ -9,18 +11,24 @@ const Sessions = ({ children, ...props }) => (
           <table class="table table-hover table-outline table-vcenter text-nowrap card-table">
             <thead>
               <tr>
-                <th>Device Name</th>
-                <th>Last seen</th>
-                <th class="w-1">Revoke</th>
+                <th>
+                  <Text id="sessionsSettings.session" />
+                </th>
+                <th class="w-1">
+                  <Text id="sessionsSettings.revoke" />
+                </th>
               </tr>
             </thead>
             <tbody>
-              
-              { props.devices && props.devices.map((device, index) => (
-                <SessionDevice device={device} revokeDevice={props.revokeDevice} index={index} />
-              ))
-              }
-            
+              {props.sessions &&
+                props.sessions.map((session, index) => (
+                  <SessionDevice
+                    session={session}
+                    user={props.user}
+                    revokeSession={props.revokeSession}
+                    index={index}
+                  />
+                ))}
             </tbody>
           </table>
         </div>

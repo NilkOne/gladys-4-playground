@@ -16,6 +16,16 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
+      user_id: {
+        allowNull: true,
+        type: Sequelize.UUID,
+        references: {
+          model: 't_user',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -34,7 +44,7 @@ module.exports = {
       },
     });
     await queryInterface.addIndex('t_variable', ['service_id']);
-    await queryInterface.addIndex('t_variable', ['service_id', 'name'], {
+    await queryInterface.addIndex('t_variable', ['service_id', 'user_id', 'name'], {
       unique: true,
     });
   },

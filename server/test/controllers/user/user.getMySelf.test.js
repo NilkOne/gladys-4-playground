@@ -12,6 +12,7 @@ describe('GET /api/v1/me', () => {
           id: '0cd30aef-9c4e-4a23-88e3-3547971296e5',
           firstname: 'John',
           lastname: 'Doe',
+          selector: 'john',
           email: 'demo@demo.com',
           birthdate: '12/12/1990',
           temperature_unit_preference: 'celsius',

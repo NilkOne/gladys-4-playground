@@ -26,13 +26,11 @@ async function saveStringState(deviceFeature, newValue) {
     },
   );
 
+  deviceFeature.last_value_string = newValue;
+  deviceFeature.last_value_changed = new Date();
+
   // save local state in RAM
-  this.stateManager.setState('deviceFeature', deviceFeature.selector, {
-    id: deviceFeature.id,
-    selector: deviceFeature.selector,
-    last_value_string: newValue,
-    last_value_changed: new Date(),
-  });
+  this.stateManager.setState('deviceFeature', deviceFeature.selector, deviceFeature);
 }
 
 module.exports = {

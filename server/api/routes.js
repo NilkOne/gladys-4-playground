@@ -1,10 +1,14 @@
 const express = require('express');
+
+// Controllers
 const AreaController = require('./controllers/area.controller');
 const CalendarController = require('./controllers/calendar.controller');
 const CameraController = require('./controllers/camera.controller');
 const DashboardController = require('./controllers/dashboard.controller');
 const DeviceController = require('./controllers/device.controller');
 const UserController = require('./controllers/user.controller');
+const PingController = require('./controllers/ping.controller');
+const GatewayController = require('./controllers/gateway.controller');
 const HouseController = require('./controllers/house.controller');
 const LightController = require('./controllers/light.controller');
 const LocationController = require('./controllers/location.controller');
@@ -13,12 +17,18 @@ const RoomController = require('./controllers/room.controller');
 const SessionController = require('./controllers/session.controller');
 const ServiceController = require('./controllers/service.controller');
 const SceneController = require('./controllers/scene.controller');
+const SystemController = require('./controllers/system.controller');
 const TriggerController = require('./controllers/trigger.controller');
 const VariableController = require('./controllers/variable.controller');
 const WeatherController = require('./controllers/weather.controller');
+
+// Middlewares
 const AuthMiddleware = require('./middlewares/authMiddleware');
 const IsInstanceConfiguredMiddleware = require('./middlewares/isInstanceConfigured');
 const CorsMiddleware = require('./middlewares/corsMiddleware');
+const rateLimitMiddleware = require('./middlewares/rateLimitMiddleware');
+
+// routes
 const setupServiceRoutes = require('./servicesRoutes');
 
 /**
@@ -41,11 +51,14 @@ function setupRoutes(gladys) {
   const userController = UserController(gladys);
   const houseController = HouseController(gladys);
   const messageController = MessageController(gladys);
+  const pingController = PingController();
+  const gatewayController = GatewayController(gladys);
   const roomController = RoomController(gladys);
   const variableController = VariableController(gladys);
   const sessionController = SessionController(gladys);
   const serviceController = ServiceController(gladys);
   const sceneController = SceneController(gladys);
+  const systemController = SystemController(gladys);
   const triggerController = TriggerController(gladys);
   const weatherController = WeatherController(gladys);
   const authMiddleware = AuthMiddleware('dashboard:write', gladys);
@@ -56,10 +69,11 @@ function setupRoutes(gladys) {
   router.use(CorsMiddleware);
 
   // open routes
-  router.post('/api/v1/login', userController.login);
+  router.get('/api/v1/ping', pingController.ping);
+  router.post('/api/v1/login', rateLimitMiddleware, userController.login);
   router.post('/api/v1/access_token', userController.getAccessToken);
-  router.post('/api/v1/forgot_password', userController.forgotPassword);
-  router.post('/api/v1/reset_password', resetPasswordAuthMiddleware, userController.resetPassword);
+  router.post('/api/v1/forgot_password', rateLimitMiddleware, userController.forgotPassword);
+  router.post('/api/v1/reset_password', rateLimitMiddleware, resetPasswordAuthMiddleware, userController.resetPassword);
   router.get('/api/v1/setup', userController.getSetupState);
 
   // this route is only useful for first signup
@@ -89,6 +103,7 @@ function setupRoutes(gladys) {
   router.delete('/api/v1/calendar/event/:calendar_event_selector', calendarController.destroyEvent);
 
   // camera
+  router.get('/api/v1/camera', cameraController.get);
   router.get('/api/v1/camera/:camera_selector/image', cameraController.getImage);
   router.post('/api/v1/camera/:camera_selector/image', cameraController.setImage);
 
@@ -100,7 +115,10 @@ function setupRoutes(gladys) {
   router.delete('/api/v1/dashboard/:dashboard_selector', dashboardController.destroy);
 
   // device
+  router.post('/api/v1/device', deviceController.create);
+  router.get('/api/v1/device', deviceController.get);
   router.get('/api/v1/device/:device_selector', deviceController.getBySelector);
+  router.delete('/api/v1/device/:device_selector', deviceController.destroy);
 
   // house
   router.post('/api/v1/house', houseController.create);
@@ -109,6 +127,18 @@ function setupRoutes(gladys) {
   router.delete('/api/v1/house/:house_selector', houseController.destroy);
   router.get('/api/v1/house/:house_selector/room', houseController.getRooms);
   router.post('/api/v1/house/:house_selector/user/:user_selector/seen', houseController.userSeen);
+
+  // gateway
+  router.get('/api/v1/gateway/status', gatewayController.getStatus);
+  router.post('/api/v1/gateway/login', gatewayController.login);
+  router.post('/api/v1/gateway/login-two-factor', gatewayController.loginTwoFactor);
+  router.get('/api/v1/gateway/key', gatewayController.getUsersKeys);
+  router.patch('/api/v1/gateway/key', gatewayController.saveUsersKeys);
+  router.get('/api/v1/gateway/backup', gatewayController.getBackups);
+  router.post('/api/v1/gateway/backup', gatewayController.createBackup);
+  router.post('/api/v1/gateway/backup/restore', gatewayController.restoreBackup);
+  router.get('/api/v1/gateway/backup/restore/status', gatewayController.getRestoreStatus);
+  router.get('/api/v1/gateway/instance/key', gatewayController.getInstanceKeysFingerprint);
 
   // room
   router.get('/api/v1/room', roomController.get);
@@ -124,6 +154,7 @@ function setupRoutes(gladys) {
   // service
   router.post('/api/v1/service/:service_name/start', serviceController.start);
   router.post('/api/v1/service/:service_name/stop', serviceController.stop);
+  router.get('/api/v1/service/:service_name', serviceController.getByName);
 
   // user
   router.get('/api/v1/user', userController.getUsers);
@@ -154,6 +185,14 @@ function setupRoutes(gladys) {
   router.patch('/api/v1/scene/:scene_selector', sceneController.update);
   router.delete('/api/v1/scene/:scene_selector', sceneController.destroy);
   router.post('/api/v1/scene/:scene_selector/start', sceneController.start);
+
+  // system
+  router.get('/api/v1/system/info', systemController.getSystemInfos);
+  router.get('/api/v1/system/disk', systemController.getDiskSpace);
+  router.get('/api/v1/system/container', systemController.getContainers);
+  router.post('/api/v1/system/shutdown', systemController.shutdown);
+  router.post('/api/v1/system/upgrade/download', systemController.downloadUpgrade);
+  router.get('/api/v1/system/upgrade/download/status', systemController.getUpgradeDownloadStatus);
 
   // trigger
   router.post('/api/v1/trigger', triggerController.create);

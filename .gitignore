@@ -7,3 +7,8 @@ jsdoc
 .env
 build
 static
+gladys-backups
+
+# VSCode
+.vscode
+.tmp

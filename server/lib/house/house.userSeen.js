@@ -10,7 +10,7 @@ const { EVENTS, WEBSOCKET_MESSAGE_TYPES } = require('../../utils/constants');
  * gladys.house.userSeen('main-house', 'john');
  */
 async function userSeen(houseSelector, userSelector) {
-  const house = await db.House.find({
+  const house = await db.House.findOne({
     where: {
       selector: houseSelector,
     },

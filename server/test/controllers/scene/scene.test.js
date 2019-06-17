@@ -8,11 +8,11 @@ describe('POST /api/v1/scene', () => {
       .post('/api/v1/scene')
       .send({
         name: 'New Scene',
-        icon: 'fe fe-bell',
+        icon: 'bell',
         actions: [
           [
             {
-              type: ACTIONS.HOUSE_ALARM.ARM,
+              type: ACTIONS.LIGHT.TURN_ON,
             },
           ],
         ],

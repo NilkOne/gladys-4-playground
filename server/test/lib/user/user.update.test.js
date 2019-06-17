@@ -26,7 +26,7 @@ describe('user.update', () => {
     const promise = user.update('0cd30aef-9c4e-4a23-88e3-3547971296e5', {
       picture: tooLongImage.picture,
     });
-    return assert.isRejected(promise, 'Validation error: Validation len on picture failed');
+    return assert.isRejected(promise, 'Validation error: Profile picture too big');
   });
   it('should return error, user not found', async () => {
     const promise = user.update('949735af-cdc5-4ae3-b756-092d174a4092', {});

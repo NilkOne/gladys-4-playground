@@ -1,7 +1,11 @@
+const { Op } = require('sequelize');
+const Sequelize = require('sequelize');
 const db = require('../../models');
 
 const DEFAULT_OPTIONS = {
   expand: [],
+  order_by: 'name',
+  order_dir: 'asc',
 };
 
 /**
@@ -15,16 +19,22 @@ const DEFAULT_OPTIONS = {
  */
 async function get(options) {
   const optionsWithDefault = Object.assign({}, DEFAULT_OPTIONS, options);
-  const include = [];
+  const queryParams = {
+    include: [],
+    order: [[optionsWithDefault.order_by, optionsWithDefault.order_dir]],
+  };
   if (optionsWithDefault.expand.includes('rooms')) {
-    include.push({
+    queryParams.include.push({
       model: db.Room,
       as: 'rooms',
     });
   }
-  const houses = await db.House.findAll({
-    include,
-  });
+  if (optionsWithDefault.search) {
+    queryParams.where = Sequelize.where(Sequelize.fn('lower', Sequelize.col('t_house.name')), {
+      [Op.like]: `%${optionsWithDefault.search}%`,
+    });
+  }
+  const houses = await db.House.findAll(queryParams);
   const housesPlain = houses.map((house) => house.get({ plain: true }));
   return housesPlain;
 }

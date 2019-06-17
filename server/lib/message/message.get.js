@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const db = require('../../models');
 
 const DEFAULT_OPTIONS = {
-  fields: ['id', 'sender_id', 'receiver_id', 'text', 'is_read', 'created_at'],
+  fields: ['id', 'sender_id', 'receiver_id', 'text', 'file', 'is_read', 'created_at'],
   take: 20,
   skip: 0,
   order_dir: 'DESC',

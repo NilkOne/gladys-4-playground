@@ -4,6 +4,7 @@ const { EVENTS } = require('../../utils/constants');
 module.exports = function TelegramService(gladys, serviceId) {
   // See https://github.com/yagop/node-telegram-bot-api/issues/540
   process.env.NTBA_FIX_319 = '1';
+  process.env.NTBA_FIX_350 = '1';
   const TelegramBot = require('node-telegram-bot-api');
   let bot;
   /**
@@ -14,7 +15,7 @@ module.exports = function TelegramService(gladys, serviceId) {
    */
   async function start() {
     logger.info('Starting telegram service');
-    const token = await gladys.variable.getValue('TELEGRAM_API_KEY1', serviceId);
+    const token = await gladys.variable.getValue('TELEGRAM_API_KEY', serviceId);
     if (!token) {
       throw new Error('No telegram api token found. Not starting telegram service');
     }
@@ -31,6 +32,7 @@ module.exports = function TelegramService(gladys, serviceId) {
         source: 'telegram',
         source_user_id: telegramUserId,
         user_id: user.id,
+        user,
         language: user.language,
         date: msg.date,
         text: msg.text,
@@ -53,7 +55,7 @@ module.exports = function TelegramService(gladys, serviceId) {
     start,
     stop,
     message: {
-      send: (chatId, text, options) => {
+      send: (chatId, message, options) => {
         logger.debug(`Sending Telegram message to user with chatId = ${chatId}.`);
         const telegramOptions = {};
         if (options && options.suggestion) {
@@ -62,7 +64,14 @@ module.exports = function TelegramService(gladys, serviceId) {
             keyboard: options.suggestion,
           };
         }
-        bot.sendMessage(chatId, text, telegramOptions);
+        bot.sendMessage(chatId, message.text, telegramOptions);
+        if (message.file) {
+          const fileOpts = {
+            filename: 'image',
+            contentType: 'image/jpg',
+          };
+          bot.sendPhoto(chatId, Buffer.from(message.file.substr(17), 'base64'), fileOpts);
+        }
       },
     },
   });

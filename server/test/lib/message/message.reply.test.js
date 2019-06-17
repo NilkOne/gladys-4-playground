@@ -35,7 +35,8 @@ describe('message.reply', () => {
         },
       },
       'hey!',
+      {},
     );
-    assert.calledWith(send, 'XXXX', 'hey!');
+    assert.calledWith(send, 'XXXX');
   });
 });

@@ -1,23 +1,44 @@
 import { RequestStatus } from '../utils/consts';
 import update from 'immutability-helper';
+import debounce from 'debounce';
+import { route } from 'preact-router';
 
 function createActions(store) {
   const actions = {
     async getScenes(state) {
       store.setState({
-        ScenesGetStatus: RequestStatus.Getting
+        scenesGetStatus: RequestStatus.Getting
       });
       try {
-        const scenes = await state.httpClient.get('/api/v1/scene');
+        const orderDir = state.getScenesOrderDir || 'asc';
+        const params = {
+          order_dir: orderDir
+        };
+        if (state.sceneSearch && state.sceneSearch.length) {
+          params.search = state.sceneSearch;
+        }
+        const scenes = await state.httpClient.get('/api/v1/scene', params);
         store.setState({
           scenes,
-          ScenesGetStatus: RequestStatus.Success
+          scenesGetStatus: RequestStatus.Success
         });
       } catch (e) {
         store.setState({
-          ScenesGetStatus: RequestStatus.Error
+          scenesGetStatus: RequestStatus.Error
         });
       }
+    },
+    async search(state, e) {
+      store.setState({
+        sceneSearch: e.target.value
+      });
+      await actions.getScenes(store.getState());
+    },
+    async changeOrderDir(state, e) {
+      store.setState({
+        getScenesOrderDir: e.target.value
+      });
+      await actions.getScenes(store.getState());
     },
     async getSceneBySelector(state, sceneSelector) {
       store.setState({
@@ -38,12 +59,12 @@ function createActions(store) {
         });
       }
     },
-    async startScene(state) {
+    async startScene(state, selector) {
       store.setState({
         SceneStartStatus: RequestStatus.Getting
       });
       try {
-        await state.httpClient.post(`/api/v1/scene/${state.scene.selector}/start`);
+        await state.httpClient.post(`/api/v1/scene/${selector}/start`);
         store.setState({
           SceneStartStatus: RequestStatus.Success
         });
@@ -69,6 +90,9 @@ function createActions(store) {
       }
     },
     addAction(state, columnIndex) {
+      if (!state.selectedNewAction) {
+        return null;
+      }
       let newState = update(state, {
         scene: {
           actions: {
@@ -160,8 +184,25 @@ function createActions(store) {
           GetUsersStatus: RequestStatus.Error
         });
       }
+    },
+    async deleteScene(state, selector) {
+      store.setState({
+        deleteSceneStatus: RequestStatus.Getting
+      });
+      try {
+        await state.httpClient.delete(`/api/v1/scene/${selector}`);
+        store.setState({
+          deleteSceneStatus: RequestStatus.Success
+        });
+        route('/dashboard/scene');
+      } catch (e) {
+        store.setState({
+          GetUsersStatus: RequestStatus.Error
+        });
+      }
     }
   };
+  actions.debouncedSearch = debounce(actions.search, 200);
   return actions;
 }
 

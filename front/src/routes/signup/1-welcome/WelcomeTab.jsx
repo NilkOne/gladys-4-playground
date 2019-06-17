@@ -46,13 +46,6 @@ const WelcomeStep = ({ children, ...props }) => (
           </Link>
         </div>
       </div>
-      <div class="row" style={margin20px}>
-        <div class="col text-center">
-          <Link class="btn btn-primary btn-block" href="/signup/create-account-blockstack">
-            <i class="fe fe-box" /> <Text id="signup.welcome.buttonCreateAccountWithBlockstack" />
-          </Link>
-        </div>
-      </div>
     </div>
   </div>
 );

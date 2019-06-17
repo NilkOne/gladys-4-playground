@@ -1,27 +1,28 @@
 import createActionsProfilePicture from '../profilePicture';
-import { RequestStatus } from '../../utils/consts';
+import { RequestStatus, CreateUserErrors } from '../../utils/consts';
 import update from 'immutability-helper';
+import get from 'get-value';
 import { route } from 'preact-router';
 import createActionsWelcome from './welcome';
+import validateEmail from '../../utils/validateEmail';
+import { fileToBase64, getCropperBase64Image } from '../../utils/picture';
+import { getYearsMonthsAndDays } from '../../utils/date';
 
-function validateEmail(email) {
-  return email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
-}
+const MIN_PASSWORD_LENGTH = 8;
 
 function createActions(store) {
-
   const actionsProfilePicture = createActionsProfilePicture(store);
   const welcomeActions = createActionsWelcome(store);
 
   const actions = {
-    resetNewUser (state) {
+    resetNewUser(state) {
       store.setState({
-        signupNewUser: {
+        newUser: {
           firstname: '',
           lastname: '',
           email: '',
           role: 'admin',
-          language: 'en',
+          language: navigator.language === 'fr' ? 'fr' : 'en',
           password: '',
           passwordRepeat: ''
         },
@@ -29,81 +30,132 @@ function createActions(store) {
         signupErrors: {}
       });
     },
+    validatePassword(state) {
+      store.setState({
+        validPassword: state.newUser.password.length >= MIN_PASSWORD_LENGTH
+      });
+    },
+    validatePasswordRepeat(state) {
+      store.setState({
+        validPasswordRepeat: state.newUser.password === state.newUser.passwordRepeat
+      });
+    },
+    updateDays(state) {
+      const { days, months, years } = getYearsMonthsAndDays(state.newUser.birthdateYear, state.newUser.birthdateMonth);
+      store.setState({
+        days,
+        months,
+        years
+      });
+    },
     validateUser(state) {
       let errored = false;
       const errors = {};
-      if (!state.signupNewUser.firstname || state.signupNewUser.firstname.length === 0) {
+      const user = state.newUser;
+      if (!user.firstname || user.firstname.length === 0) {
         errored = true;
         errors.firstname = true;
       }
-      if (!state.signupNewUser.lastname || state.signupNewUser.lastname.length === 0) {
+      if (!user.lastname || user.lastname.length === 0) {
         errored = true;
         errors.lastname = true;
       }
-      if (!validateEmail(state.signupNewUser.email)) {
+      if (!validateEmail(user.email)) {
         errored = true;
         errors.email = true;
       }
-      if (state.signupNewUser.password !== state.signupNewUser.passwordRepeat) {
+      if (user.password !== user.passwordRepeat) {
         errored = true;
         errors.passwordRepeat = true;
       }
-      if (state.signupNewUser.password.length < 8) {
+      if (user.password.length < MIN_PASSWORD_LENGTH) {
         errored = true;
         errors.password = true;
       }
-      if (!state.signupNewUser.birthdateMonth || !state.signupNewUser.birthdateDay || !state.signupNewUser.birthdateYear) {
+      if (!user.birthdateMonth || !user.birthdateDay || !user.birthdateYear) {
         errored = true;
         errors.birthdate = true;
       }
       store.setState({
-        signupErrors: errors 
+        signupErrors: errors
       });
       return errored;
     },
-    async createUser (state) {
+    async createUser(state) {
       store.setState({
-        signupAlreadySubmitted: true 
+        signupAlreadySubmitted: true
       });
       const errored = actions.validateUser(state);
       if (errored) {
-        return ;
+        return;
       }
-      const userToCreate = Object.assign({}, state.signupNewUser, {
-        birthdate: `${state.signupNewUser.birthdateYear}-${state.signupNewUser.birthdateMonth}-${state.signupNewUser.birthdateDay}`
+      const userToCreate = Object.assign({}, state.newUser, {
+        birthdate: `${state.newUser.birthdateYear}-${state.newUser.birthdateMonth}-${state.newUser.birthdateDay}`
       });
+      if (state.cropper) {
+        userToCreate.picture = await getCropperBase64Image(state.cropper);
+      }
       store.setState({
-        createLocalAccountStatus: RequestStatus.Getting 
+        createLocalAccountStatus: RequestStatus.Getting
       });
       try {
         const user = await state.httpClient.post(`/api/v1/signup`, userToCreate);
         store.setState({
-          user, createLocalAccountStatus: RequestStatus.Success 
+          user,
+          createLocalAccountStatus: RequestStatus.Success
         });
         state.session.saveUser(user);
+        state.session.init();
+        if (userToCreate.picture) {
+          state.session.saveProfilePicture(userToCreate.picture);
+          store.setState({
+            profilePicture: userToCreate.picture
+          });
+        }
         actionsProfilePicture.loadProfilePicture(state);
         route('/signup/preference');
       } catch (e) {
-        if (!e.response) {
+        const status = get(e, 'response.status');
+        const message = get(e, 'response.data.message');
+        if (!status) {
           store.setState({
-            createLocalAccountStatus: RequestStatus.NetworkError 
+            createLocalAccountStatus: RequestStatus.NetworkError
           });
-        } else if (e.response && e.response.status === 409) {
+        } else if (message === 'INSTANCE_ALREADY_CONFIGURED') {
           store.setState({
-            createLocalAccountStatus: RequestStatus.ConflictError, createLocalAccountError: e.response.data 
+            createLocalAccountStatus: CreateUserErrors.InstanceAlreadyConfigured,
+            createLocalAccountError: e.response.data
           });
         } else {
           store.setState({
-            createLocalAccountStatus: RequestStatus.Error 
+            createLocalAccountStatus: RequestStatus.Error,
+            createLocalAccountError: e.response.data
           });
         }
       }
     },
-    updateNewUser (state, property, value) {
+    async updateProfilePicture(state, e) {
+      const base64Image = await fileToBase64(e.target.files[0]);
       const newState = update(state, {
-        signupNewUser: {
+        newProfilePicture: {
+          $set: base64Image
+        },
+        newProfilePictureFormValue: {
+          $set: e.target.value
+        }
+      });
+      store.setState(newState);
+    },
+    setCropperInstance(state, cropper) {
+      store.setState({
+        cropper
+      });
+    },
+    updateNewUserProperty(state, property, value) {
+      const newState = update(state, {
+        newUser: {
           [property]: {
-            $set: value 
+            $set: value
           }
         }
       });

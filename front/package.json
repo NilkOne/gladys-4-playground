@@ -8,8 +8,8 @@
     "serve": "preact build && preact serve",
     "dev": "preact watch -p 1444",
     "eslint": "eslint src --ext .json --ext .js",
-    "prettier-check": "prettier --check src/**/*.js",
-    "prettier": "prettier --write src/**/*.js",
+    "prettier-check": "prettier --check '**/*.js' '**/*.jsx' '**/*.json'",
+    "prettier": "prettier --write '**/*.js' '**/*.jsx' '**/*.json'",
     "test": "jest --coverage"
   },
   "devDependencies": {
@@ -27,9 +27,13 @@
   "dependencies": {
     "@gladysassistant/gladys-gateway-js": "^1.1.0",
     "axios": "^0.18.0",
+    "classnames": "^2.2.6",
     "create-react-ref": "^0.1.0",
+    "cropperjs": "^1.5.1",
     "dayjs": "^1.8.14",
+    "debounce": "^1.2.0",
     "dotenv": "^6.2.0",
+    "get-value": "^3.0.1",
     "immutability-helper": "^3.0.0",
     "leaflet": "^1.4.0",
     "linkstate": "^1.1.1",
@@ -40,8 +44,10 @@
     "preact-i18n": "^1.2.2",
     "preact-router": "^2.5.7",
     "react-big-calendar": "^0.20.3",
+    "set-value": "^3.0.0",
     "tabler-ui": "0.0.32",
     "unistore": "^3.2.1",
+    "uuid": "^3.3.2",
     "vis": "^4.21.0"
   },
   "jest": {

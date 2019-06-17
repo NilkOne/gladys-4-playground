@@ -27,14 +27,6 @@ async function create(message) {
     this.replyByIntent(message, 'question.no-intent-found', context);
   }
 
-  // new classification found, emitting event
-  this.event.emit(`intent.${classification.intent}`, message, classification, context);
-
-  // if a first answer needs to be sent, send it
-  if (classification.answer) {
-    this.reply(message, classification.answer);
-  }
-
   const messageToInsert = {
     text: message.text,
     sender_id: message.user.id,
@@ -43,6 +35,14 @@ async function create(message) {
   };
 
   await db.Message.create(messageToInsert);
+
+  // if a first answer needs to be sent, send it
+  if (classification.answer) {
+    await this.reply(message, classification.answer, classification.context);
+  }
+
+  // new classification found, emitting event
+  this.event.emit(`intent.${classification.intent}`, message, classification, context);
 
   return {
     message,

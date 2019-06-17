@@ -25,6 +25,9 @@ async function get(userId, options) {
     limit: optionsWithDefault.take,
     offset: optionsWithDefault.skip,
     order: [[optionsWithDefault.order_by, optionsWithDefault.order_dir]],
+    where: {
+      revoked: false,
+    },
   });
 
   const sessionsPlain = sessions.map((s) => {

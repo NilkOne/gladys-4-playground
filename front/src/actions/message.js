@@ -40,10 +40,12 @@ function createActions(store) {
       actions.scrollToBottom();
       const randomWait = Math.floor(Math.random() * TYPING_MAX_TIME) + TYPING_MIN_TIME;
       setTimeout(() => {
-        state.messages.push(message);
+        const newMessages = update(store.getState().messages, {
+          $push: [message]
+        });
         store.setState({
           gladysIsTyping: false,
-          messages: state.messages
+          messages: newMessages
         });
         actions.scrollToBottom();
       }, randomWait);

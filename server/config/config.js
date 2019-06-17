@@ -7,6 +7,10 @@ module.exports = {
       underscored: true,
       freezeTableName: true,
     },
+    backupsFolder: './gladys-backups',
+    gladysGatewayServerUrl: process.env.GLADYS_GATEWAY_SERVER_URL || 'https://api.gladysgateway.com',
+    dockerImage: 'gladysassistant/gladys-4-playground',
+    tempFolder: '/tmp/gladys',
   },
   test: {
     dialect: 'sqlite',
@@ -17,6 +21,10 @@ module.exports = {
       underscored: true,
       freezeTableName: true,
     },
+    backupsFolder: './gladys-backups',
+    gladysGatewayServerUrl: process.env.GLADYS_GATEWAY_SERVER_URL || 'https://api.gladysgateway.com',
+    dockerImage: 'gladysassistant/gladys-4-playground',
+    tempFolder: '/tmp/gladys',
   },
   production: {
     dialect: 'sqlite',
@@ -27,5 +35,9 @@ module.exports = {
       underscored: true,
       freezeTableName: true,
     },
+    backupsFolder: '/var/lib/gladys/backups',
+    gladysGatewayServerUrl: process.env.GLADYS_GATEWAY_SERVER_URL || 'https://api.gladysgateway.com',
+    dockerImage: 'gladysassistant/gladys-4-playground',
+    tempFolder: '/tmp/gladys',
   },
 };

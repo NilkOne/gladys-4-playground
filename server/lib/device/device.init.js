@@ -34,6 +34,7 @@ async function init() {
     this.add(plainDevice);
     return plainDevice;
   });
+  this.setupPoll();
   return plainDevices;
 }
 

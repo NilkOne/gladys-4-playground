@@ -26,7 +26,7 @@ async function revoke(userId, sessionId) {
   await session.update({ revoked: true });
 
   // revoke access token in RAM cache
-  this.cache.set(`revoked_session:${sessionId}`);
+  this.cache.set(`revoked_session:${sessionId}`, true);
 
   return {
     id: session.id,

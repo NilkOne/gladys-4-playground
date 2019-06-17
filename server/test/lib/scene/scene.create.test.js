@@ -9,11 +9,11 @@ describe('SceneManager', () => {
     const sceneManager = new SceneManager(light);
     const scene = await sceneManager.create({
       name: 'My living room',
-      icon: 'fe fe-bell',
+      icon: 'bell',
       actions: [
         [
           {
-            type: ACTIONS.HOUSE_ALARM.ARM,
+            type: ACTIONS.LIGHT.TURN_ON,
           },
         ],
       ],
@@ -24,12 +24,12 @@ describe('SceneManager', () => {
     const sceneManager = new SceneManager(light);
     const scene = await sceneManager.create({
       name: 'My living room',
-      icon: 'fe fe-bell',
+      icon: 'bell',
       selector: 'my-custom-selector',
       actions: [
         [
           {
-            type: ACTIONS.HOUSE_ALARM.ARM,
+            type: ACTIONS.LIGHT.TURN_ON,
           },
         ],
       ],
@@ -40,10 +40,10 @@ describe('SceneManager', () => {
     const sceneManager = new SceneManager(light);
     const promise = sceneManager.create({
       name: 'My living room',
-      icon: 'fe fe-bell',
+      icon: 'bell',
       actions: [
         {
-          type: ACTIONS.HOUSE_ALARM.ARM,
+          type: ACTIONS.LIGHT.TURN_ON,
         },
       ],
     });

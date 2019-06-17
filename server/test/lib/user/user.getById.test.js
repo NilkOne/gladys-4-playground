@@ -10,6 +10,7 @@ describe('user.getById', () => {
       id: '0cd30aef-9c4e-4a23-88e3-3547971296e5',
       firstname: 'John',
       lastname: 'Doe',
+      selector: 'john',
       email: 'demo@demo.com',
       language: 'en',
       birthdate: '12/12/1990',

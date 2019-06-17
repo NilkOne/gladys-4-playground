@@ -8,7 +8,17 @@ export const LoginStatus = {
 export const CreateUserErrors = {
   PasswordTooShort: 'PasswordTooShort',
   PasswordNotMatching: 'PasswordNotMatching',
-  InvalidEmail: 'InvalidEmail'
+  InvalidEmail: 'InvalidEmail',
+  InstanceAlreadyConfigured: 'InstanceAlreadyConfigured'
+};
+
+export const ForgotPasswordStatus = {
+  WrongEmailError: 'WrongEmailError',
+  UserNotFound: 'UserNotFound'
+};
+
+export const ResetPasswordStatus = {
+  ResetTokenNotFound: 'ResetTokenNotFound'
 };
 
 export const TelegramGetApiKeyStatus = {
@@ -47,5 +57,15 @@ export const RequestStatus = {
   Error: 'Error',
   NetworkError: 'NetworkError',
   ConflictError: 'ConflictError',
-  ValidationError: 'ValidationError'
+  ValidationError: 'ValidationError',
+  RateLimitError: 'RateLimitError'
 };
+
+export const GetWeatherStatus = {
+  HouseHasNoCoordinates: 'HouseHasNoCoordinates',
+  ServiceNotConfigured: 'ServiceNotConfigured',
+  RequestToThirdPartyFailed: 'RequestToThirdPartyFailed'
+};
+
+export const DASHBOARD_BOX_STATUS_KEY = 'DashboardBoxStatus';
+export const DASHBOARD_BOX_DATA_KEY = 'DashboardBoxData';

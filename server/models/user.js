@@ -4,8 +4,11 @@ const passwordUtils = require('../utils/password');
 const { addSelector } = require('../utils/addSelector');
 const { AVAILABLE_LANGUAGES_LIST, USER_ROLE_LIST } = require('../utils/constants');
 
-const MAX_SIZE_PROFILE_PICTURE = 30 * 1000; // 30 ko
-const DEFAULT_PROFILE_PICTURE = fs.readFileSync(path.resolve(__dirname, '../config/default-profile-picture.b64'));
+const MAX_SIZE_PROFILE_PICTURE = 80 * 1024; // 80 ko
+const DEFAULT_PROFILE_PICTURE = fs.readFileSync(
+  path.resolve(__dirname, '../config/default-profile-picture.b64'),
+  'utf8',
+);
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
@@ -48,7 +51,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         defaultValue: DEFAULT_PROFILE_PICTURE,
         validate: {
-          len: [0, MAX_SIZE_PROFILE_PICTURE],
+          customValidator(value) {
+            if (value && value.length) {
+              const base64ImageLength = Buffer.byteLength(value.substring(value.indexOf(',') + 1), 'base64');
+              if (base64ImageLength > MAX_SIZE_PROFILE_PICTURE) {
+                throw new Error('Profile picture too big');
+              }
+            }
+          },
         },
       },
       password: {

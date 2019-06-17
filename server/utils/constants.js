@@ -30,6 +30,11 @@ const EVENTS = {
     ADD_FEATURE: 'device.add-feature',
     ADD_PARAM: 'device.add-param',
     NEW_STATE: 'device.new-state',
+    PURGE_STATES: 'device.purge-states',
+  },
+  GATEWAY: {
+    CREATE_BACKUP: 'gateway.create-backup',
+    RESTORE_BACKUP: 'gateway.restore-backup',
   },
   USER_SLEEP: {
     TIME_TO_WAKE_UP: 'user.time-to-wake-up',
@@ -90,6 +95,10 @@ const EVENTS = {
   },
   MESSAGE: {
     NEW: 'message.new',
+  },
+  SYSTEM: {
+    DOWNLOAD_UPGRADE: 'system.download-upgrade',
+    CHECK_UPGRADE: 'system.check-upgrade',
   },
   WEBSOCKET: {
     SEND: 'websocket.send',
@@ -158,19 +167,6 @@ const CONDITIONS = {
 const ACTIONS = {
   LIGHT: {
     TURN_ON: 'light.turn-on',
-    TURN_OFF: 'light.turn-off',
-    CHANGE_BRIGHTNESS: 'light.change-brightness',
-    CHANGE_HUE: 'light.change-hue',
-    CHANGE_SATURATION: 'light.change-saturation',
-  },
-  HOUSE_ALARM: {
-    ARM: 'house.alarm.arm',
-    DISARM: 'house.alarm.disarm',
-    TRIGGER: 'house.alarm.trigger',
-  },
-  USER_PRESENCE: {
-    SET_AWAY: 'user.event.set-away',
-    SET_AT_HOME: 'user.event.set-at-home',
   },
   TIME: {
     DELAY: 'delay',
@@ -181,7 +177,6 @@ const ACTIONS = {
   },
   SCENE: {
     START: 'scene.start',
-    STOP: 'scene.stop',
   },
   TELEGRAM: {
     SEND: 'telegram.send',
@@ -197,6 +192,9 @@ const INTENTS = {
   },
   WEATHER: {
     GET: 'intent.weather.get',
+  },
+  CAMERA: {
+    GET_IMAGE_ROOM: 'intent.camera.get-image-room',
   },
 };
 
@@ -246,11 +244,18 @@ const DEVICE_POLL_FREQUENCIES = {
 };
 
 const WEBSOCKET_MESSAGE_TYPES = {
+  BACKUP: {
+    DOWNLOADED: 'backup.downloaded',
+  },
   MESSAGE: {
     NEW: 'message.new',
   },
   AUTHENTICATION: {
     REQUEST: 'authenticate.request',
+  },
+  GATEWAY: {
+    BACKUP_UPLOAD_PROGRESS: 'gateway.backup-upload-progress',
+    BACKUP_DOWNLOAD_PROGRESS: 'gateway.backup-download-progress',
   },
   SCENE: {
     EXECUTING_ACTION: 'scene.executing-action',
@@ -260,6 +265,11 @@ const WEBSOCKET_MESSAGE_TYPES = {
     LEFT_HOME: 'user.left-home',
     BACK_HOME: 'user.back-home',
     SEEN_AT_HOME: 'user.seen-at-home',
+  },
+  UPGRADE: {
+    DOWNLOAD_PROGRESS: 'upgrade.download-progress',
+    DOWNLOAD_FINISHED: 'upgrade.download-finished',
+    DOWNLOAD_FAILED: 'upgrade.download-failed',
   },
 };
 
@@ -273,6 +283,14 @@ const DASHBOARD_BOX_TYPE = {
   USER_PRESENCE: 'user-presence',
   CAMERA: 'camera',
   DEVICES_IN_ROOM: 'devices-in-room',
+};
+
+const ERROR_MESSAGES = {
+  HOUSE_HAS_NO_COORDINATES: 'HOUSE_HAS_NO_COORDINATES',
+  SERVICE_NOT_CONFIGURED: 'SERVICE_NOT_CONFIGURED',
+  REQUEST_TO_THIRD_PARTY_FAILED: 'REQUEST_TO_THIRD_PARTY_FAILED',
+  INVALID_ACCESS_TOKEN: 'INVALID_ACCESS_TOKEN',
+  NO_CONNECTED_TO_THE_INTERNET: 'NO_CONNECTED_TO_THE_INTERNET',
 };
 
 const createList = (obj) => {
@@ -341,3 +359,5 @@ module.exports.DASHBOARD_TYPE = DASHBOARD_TYPE;
 module.exports.DASHBOARD_TYPE_LIST = DASHBOARD_TYPE_LIST;
 module.exports.DASHBOARD_BOX_TYPE = DASHBOARD_BOX_TYPE;
 module.exports.DASHBOARD_BOX_TYPE_LIST = DASHBOARD_BOX_TYPE_LIST;
+
+module.exports.ERROR_MESSAGES = ERROR_MESSAGES;

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import config from '../../config';
 
+const MAX_RETRY = 3;
+
 export class HttpClient {
   constructor(session) {
     this.session = session;
@@ -26,7 +28,11 @@ export class HttpClient {
     this.session.setAccessToken(data.access_token);
   }
 
-  async executeQuery(method, url, query, body) {
+  async executeQuery(method, url, query, body, retryCount = 0) {
+    if (retryCount > MAX_RETRY) {
+      this.session.reset();
+      throw new Error('MAX_RETRY_EXCEEDED');
+    }
     try {
       const { data } = await axios({
         baseURL: config.localApiUrl,
@@ -40,7 +46,7 @@ export class HttpClient {
     } catch (e) {
       if (e.response && e.response.status === 401) {
         await this.refreshAccessToken();
-        return this.executeQuery(method, url, query, body);
+        return this.executeQuery(method, url, query, body, retryCount + 1);
       }
       throw e;
     }

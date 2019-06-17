@@ -12,7 +12,9 @@ module.exports = function AuthMiddleware(scope, gladys) {
       if (authHeader && authHeader.startsWith('Bearer ')) {
         const token = authHeader.substring(7, authHeader.length);
         // we validate the token
-        userId = gladys.session.validateAccessToken(token, scope);
+        const payload = gladys.session.validateAccessToken(token, scope);
+        userId = payload.user_id;
+        req.session_id = payload.session_id;
       } else if (authHeader || req.body.api_key || req.query.api_key) {
         const token = authHeader || req.body.api_key || req.query.api_key;
         // we validate the token

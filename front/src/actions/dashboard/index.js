@@ -144,6 +144,15 @@ function createActions(store) {
         dashboardEditMode: false
       });
     },
+    validateBoxes(state) {
+      state.homeDashboard.boxes.forEach(box => {
+        switch (box.type) {
+          case 'weather':
+            if (!box.house) {
+            }
+        }
+      });
+    },
     async saveDashboard(state) {
       store.setState({
         DashboardSavingStatus: RequestStatus.Getting

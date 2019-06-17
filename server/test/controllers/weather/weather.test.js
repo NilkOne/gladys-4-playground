@@ -48,6 +48,16 @@ describe('GET /api/v1/house/:selector/weather', () => {
           units: 'si',
           wind_speed: 5.25,
           weather: 'cloud',
+          house: {
+            id: 'a741dfa6-24de-4b46-afc7-370772f068d5',
+            name: 'Test house',
+            selector: 'test-house',
+            latitude: 12,
+            longitude: 12,
+            created_at: '2019-02-12T07:49:07.556Z',
+            updated_at: '2019-02-12T07:49:07.556Z',
+          },
+          options: { latitude: 12, longitude: 12, language: 'en' },
         });
       });
   });

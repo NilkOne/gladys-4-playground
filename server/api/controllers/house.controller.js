@@ -43,7 +43,7 @@ module.exports = function HouseController(gladys) {
    * }]
    */
   async function get(req, res) {
-    const houses = await gladys.house.get();
+    const houses = await gladys.house.get(req.query);
     res.json(houses);
   }
 

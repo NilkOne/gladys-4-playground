@@ -1,67 +1,58 @@
-import update from 'immutability-helper';
+import update, { extend } from 'immutability-helper';
 
-const DASHBOARD_BOX_STATUS_KEY = 'DashboardBoxStatus';
-const DASHBOARD_BOX_DATA_KEY = 'DashboardBoxData';
+extend('$auto', function(value, object) {
+  return object ? update(object, value) : update({}, value);
+});
+
+import get from 'get-value';
+
+import { DASHBOARD_BOX_STATUS_KEY, DASHBOARD_BOX_DATA_KEY } from '../../utils/consts';
 
 function createActions(store) {
   const actions = {
     updateBoxStatus(state, key, x, y, status) {
-      let newState = store.getState();
-      if (!newState[`${DASHBOARD_BOX_STATUS_KEY}${key}`]) {
-        newState = update(newState, {
-          [`${DASHBOARD_BOX_STATUS_KEY}${key}`]: {
-            $set: {}
-          }
-        });
-      }
-      newState = update(newState, {
+      // we mutate safely the status
+      const newState = update(store.getState(), {
         [`${DASHBOARD_BOX_STATUS_KEY}${key}`]: {
-          [`${x}.${y}`]: {
-            $set: status
+          $auto: {
+            [`${x}_${y}`]: {
+              $auto: {
+                $set: status
+              }
+            }
           }
         }
       });
+      // and we save the state
       store.setState(newState);
     },
     mergeBoxData(state, key, x, y, data) {
-      let newState = store.getState();
-      // if DashboardBoxData doesn't exist for this box
-      if (!newState[`${DASHBOARD_BOX_DATA_KEY}${key}`]) {
-        newState = update(newState, {
-          [`${DASHBOARD_BOX_DATA_KEY}${key}`]: {
-            $set: {}
-          }
-        });
-      }
-      // if this box doesn't exist
-      if (!newState[`${DASHBOARD_BOX_DATA_KEY}${key}`][`${x}.${y}`]) {
-        newState = update(newState, {
-          [`${DASHBOARD_BOX_DATA_KEY}${key}`]: {
-            [`${x}.${y}`]: {
-              $set: {}
-            }
-          }
-        });
-      }
-      // finally, merge data
-      newState = update(newState, {
+      // we merge the old with the new one
+      const newState = update(store.getState(), {
         [`${DASHBOARD_BOX_DATA_KEY}${key}`]: {
-          [`${x}.${y}`]: {
-            $merge: data
+          $auto: {
+            [`${x}_${y}`]: {
+              $auto: {
+                $merge: data
+              }
+            }
           }
         }
       });
+      // and we set the state
       store.setState(newState);
     },
+    getBoxStatus(state, key, x, y) {
+      // we refresh the state the be sure we have the latest state
+      const currentState = store.getState();
+      // we get the current box data and return it
+      return get(currentState, `${DASHBOARD_BOX_STATUS_KEY}${key}.${x}_${y}`);
+    },
     getBoxData(state, key, x, y) {
-      let latestState = store.getState();
-      if (
-        latestState[`${DASHBOARD_BOX_DATA_KEY}${key}`] &&
-        latestState[`${DASHBOARD_BOX_DATA_KEY}${key}`][`${x}.${y}`]
-      ) {
-        return latestState[`${DASHBOARD_BOX_DATA_KEY}${key}`][`${x}.${y}`];
-      }
-      return null;
+      // we refresh the state the be sure we have the latest state
+      const currentState = store.getState();
+      // we get the current box data and return it
+      return get(currentState, `${DASHBOARD_BOX_DATA_KEY}${key}.${x}_${y}`);
     },
     updateBoxConfig(state, x, y, data) {
       const newState = update(state, {

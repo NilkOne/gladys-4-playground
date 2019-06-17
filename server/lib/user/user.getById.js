@@ -17,6 +17,7 @@ async function getById(id) {
       'id',
       'firstname',
       'lastname',
+      'selector',
       'email',
       'language',
       'birthdate',

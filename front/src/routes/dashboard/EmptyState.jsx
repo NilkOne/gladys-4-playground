@@ -1,29 +1,10 @@
 import { Text } from 'preact-i18n';
+import style from './style.css';
 
 const EmptyState = ({ children, ...props }) => (
-  <div
-    style={{
-      width: '60%',
-      maxWidth: '400px',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      marginTop: '80px',
-      textAlign: 'center'
-    }}
-  >
-    <img
-      src="/assets/images/undraw_personalization.svg"
-      style={{
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        display: 'block',
-        maxWidth: '300px'
-      }}
-    />
-    <p style={{
-      marginTop: '20px' 
-    }}
-    >
+  <div class={style.emptyStateDivBox}>
+    <img src="/assets/images/undraw_personalization.svg" class={style.emptyStateImage} />
+    <p class={style.emptyStateText}>
       <Text id="dashboard.emptyDashboardSentenceTop" />
       <br /> <Text id="dashboard.emptyDashboardSentenceBottom" />
     </p>

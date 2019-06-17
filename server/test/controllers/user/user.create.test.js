@@ -65,7 +65,7 @@ describe('POST /signup', () => {
         role: 'admin',
       })
       .expect('Content-Type', /json/)
-      .expect(401)
+      .expect(403)
       .then((res) => {
         expect(res.body).to.have.property('message', 'INSTANCE_ALREADY_CONFIGURED');
       });

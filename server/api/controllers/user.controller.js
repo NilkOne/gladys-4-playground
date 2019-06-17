@@ -121,7 +121,8 @@ module.exports = function UserController(gladys) {
    */
   async function forgotPassword(req, res) {
     const session = await gladys.user.forgotPassword(req.body.email);
-    logger.info(`Forgot password initiated for user ${req.body.email}, access_token = ${session.access_token}`);
+    const link = `${req.body.origin}/reset-password?token=${session.access_token}`;
+    logger.info(`Forgot password initiated for user ${req.body.email}, link = ${link}`);
     res.json({
       success: true,
     });
@@ -135,6 +136,7 @@ module.exports = function UserController(gladys) {
    */
   async function resetPassword(req, res) {
     const user = await gladys.user.updatePassword(req.user.id, req.body.password);
+    await gladys.session.revoke(req.user.id, req.session_id);
     res.json(user);
   }
 

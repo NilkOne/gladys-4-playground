@@ -2,9 +2,3 @@
   from = "/*"
   to = "/index.html"
   status = 200
-
-[[headers]]
-  for = "/assets/blockstack/manifest.json"
-
-  [headers.values]
-    access-control-allow-origin = "*"

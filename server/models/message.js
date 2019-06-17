@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.TEXT,
       },
+      file: {
+        allowNull: true,
+        type: DataTypes.TEXT,
+      },
       conversation_id: {
         allowNull: false,
         type: DataTypes.UUID,

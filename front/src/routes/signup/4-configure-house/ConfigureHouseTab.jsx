@@ -1,4 +1,5 @@
 import { Text, Localizer } from 'preact-i18n';
+import cx from 'classnames';
 
 const removeRoomLocal = (index, removeRoom) => () => {
   removeRoom(index);
@@ -21,11 +22,9 @@ const ConfigureHouseTab = ({ children, ...props }) => (
           <input
             type="text"
             value={props.signupNewHouseName}
-            class={
-              props.signupConfigureHouseErrors && props.signupConfigureHouseErrors.houseName
-                ? 'form-control is-invalid'
-                : 'form-control'
-            }
+            class={cx('form-control', {
+              'is-invalid': props.signupConfigureHouseErrors && props.signupConfigureHouseErrors.houseName
+            })}
             onInput={props.updateNewHouseName}
             placeholder={<Text id="signup.configureHouse.houseNamePlaceHolder" />}
           />
@@ -50,14 +49,15 @@ const ConfigureHouseTab = ({ children, ...props }) => (
             marginBottom: '10px'
           }}
         >
-          {props.signupRooms.map((room, index) => (
-            <span class="tag">
-              {room}
-              <a onClick={removeRoomLocal(index, props.removeRoom)} class="tag-addon">
-                <i class="fe fe-x" />
-              </a>
-            </span>
-          ))}
+          {props.signupRooms &&
+            props.signupRooms.map((room, index) => (
+              <span class="tag">
+                {room}
+                <a onClick={removeRoomLocal(index, props.removeRoom)} class="tag-addon">
+                  <i class="fe fe-x" />
+                </a>
+              </span>
+            ))}
         </div>
         <div class="input-group">
           <Localizer>

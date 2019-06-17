@@ -1,3 +1,4 @@
+const get = require('get-value');
 const { NotFoundError } = require('../../utils/coreErrors');
 const logger = require('../../utils/logger');
 
@@ -13,11 +14,11 @@ async function poll(device) {
   if (service === null) {
     throw new NotFoundError(`Service ${device.service.name} was not found.`);
   }
-  if (typeof service.poll !== 'function') {
-    throw new NotFoundError(`Service ${device.service.name} does not have a poll function.`);
+  if (typeof get(service, 'device.poll') !== 'function') {
+    throw new NotFoundError(`Service ${device.service.name} does not have a device.poll function.`);
   }
   try {
-    await service.poll(device);
+    await service.device.poll(device);
   } catch (e) {
     logger.error(`There was an error while polling device ${device.selector}`);
     logger.error(e);

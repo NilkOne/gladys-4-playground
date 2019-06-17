@@ -1,5 +1,5 @@
 const { parseWebsocketMessage, formatWebsocketMessage } = require('../../utils/websocketUtils');
-const { EVENTS, WEBSOCKET_MESSAGE_TYPES } = require('../../utils/constants');
+const { EVENTS, WEBSOCKET_MESSAGE_TYPES, ERROR_MESSAGES } = require('../../utils/constants');
 const logger = require('../../utils/logger');
 
 const WebsocketManager = function WebsocketManager(wss, gladys) {
@@ -106,16 +106,16 @@ function init() {
         case WEBSOCKET_MESSAGE_TYPES.AUTHENTICATION.REQUEST:
           try {
             // we validate the token
-            const userId = this.gladys.session.validateAccessToken(
+            const payload = this.gladys.session.validateAccessToken(
               parsedMessage.payload.accessToken,
               'dashboard:write',
             );
-            user = await this.gladys.user.getById(userId);
+            user = await this.gladys.user.getById(payload.user_id);
             authenticated = true;
             this.userConnected(user, ws);
           } catch (e) {
             logger.warn(e);
-            ws.terminate();
+            ws.close(4000, ERROR_MESSAGES.INVALID_ACCESS_TOKEN);
           }
           break;
         default:

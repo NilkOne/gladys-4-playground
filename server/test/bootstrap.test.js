@@ -19,6 +19,7 @@ before(async function before() {
     disableService: true,
     disableBrainLoading: true,
     disableTriggerLoading: true,
+    disableSchedulerLoading: true,
     jwtSecret: 'secret',
   };
   const gladys = Gladys(config);
@@ -31,10 +32,14 @@ before(async function before() {
   }
   await gladys.start();
   gladys.stateManager.setState('service', 'darksky', fakeDarkSkyService);
+  gladys.gateway.gladysGatewayClient.accessToken = 'access-token';
+  gladys.gateway.gladysGatewayClient.refreshToken = 'refresh-token';
   // @ts-ignore
   global.TEST_BACKEND_APP = server.start(gladys, SERVER_PORT, {
     serveFront: false,
   });
+  // @ts-ignore
+  global.TEST_GLADYS_INSTANCE = gladys;
 });
 
 // cleaning and filling database between each tests
@@ -43,6 +48,8 @@ beforeEach(async function beforeEach() {
   try {
     await cleanDb();
     await seedDb();
+    // @ts-ignore
+    global.TEST_GLADYS_INSTANCE.cache.clear();
   } catch (e) {
     logger.trace(e);
     throw e;

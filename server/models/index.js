@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize');
-const config = require('../config/config');
+const getConfig = require('../utils/getConfig');
 
-const env = process.env.NODE_ENV || 'development';
+const config = getConfig();
 
 // SQLite
-const sequelize = new Sequelize('mainDB', null, null, config[env]);
+const sequelize = new Sequelize('mainDB', null, null, config);
 
 const AreaModel = require('./area');
 const CalendarModel = require('./calendar');

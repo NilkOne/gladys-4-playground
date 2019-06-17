@@ -1,28 +1,25 @@
 import { Component } from 'preact';
 import { connect } from 'unistore/preact';
 import actions from '../../actions/map';
-import 'leaflet/dist/leaflet.css';
+import Map from './Map';
 
 @connect(
-  '',
+  'usersWithLocation,housesWithLocation',
   actions
 )
-class Map extends Component {
-
+class MapPage extends Component {
   componentDidMount() {
-    this.props.initLeafletMap();
+    this.props.getUsersWithLocation();
+    this.props.getHousesWithLocation();
   }
 
-  render({}, { }) {
+  render(props, {}) {
     return (
       <div class="page">
         <div class="page-main">
           <div class="my-3 my-md-5">
             <div class="map-header">
-              <div id="map-tab-leaflet" style={{
-                height: '550px' 
-              }}
-              />
+              <Map users={props.usersWithLocation} houses={props.housesWithLocation} />
             </div>
           </div>
         </div>
@@ -31,4 +28,4 @@ class Map extends Component {
   }
 }
 
-export default Map;
+export default MapPage;

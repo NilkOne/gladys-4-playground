@@ -9,6 +9,15 @@ const actions = store => ({
       totalSize: integrationsConfig[state.user.language].totalSize
     });
   },
+  async getIntegrationByName(state, name, podId = null) {
+    const query = {
+      pod_id: podId
+    };
+    const currentIntegration = await state.httpClient.get(`/api/v1/service/${name}`, query);
+    store.setState({
+      currentIntegration
+    });
+  },
   getIntegrationByCategory(state, category) {
     const integrations = integrationsConfig[state.user.language][category] || [];
     store.setState({

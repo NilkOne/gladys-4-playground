@@ -27,7 +27,7 @@ function validateAccessToken(accessToken, scope) {
     throw new Error401('AuthMiddleware: Session was revoked');
   }
 
-  return decoded.user_id;
+  return decoded;
 }
 
 module.exports = {

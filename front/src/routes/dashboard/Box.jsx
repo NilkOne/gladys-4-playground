@@ -7,18 +7,13 @@ import DevicesInRoomsBox from '../../components/boxs/device-in-room/DevicesInRoo
 const Box = ({ children, ...props }) => {
   switch (props.box.type) {
     case 'weather':
-      return <WeatherBox temperature={27} unit={'C'} date={'Fri 20/5'} weather="sun" />;
+      return <WeatherBox {...props} />;
     case 'user-presence':
-      return <AtHomeBox />;
+      return <AtHomeBox {...props} />;
     case 'camera':
-      return (
-        <CameraBox
-          roomName="Living Room"
-          url="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?cs=srgb&dl=apartment-ceiling-chairs-1571460.jpg&fm=jpg?dl&fit=crop&crop=entropy&w=640&h=411"
-        />
-      );
+      return <CameraBox {...props} />;
     case 'temperature-in-room':
-      return <RoomTemperatureBox temperature={22} unit="C" roomName="Living Room" />;
+      return <RoomTemperatureBox {...props} />;
     case 'devices-in-room':
       return <DevicesInRoomsBox {...props} />;
   }

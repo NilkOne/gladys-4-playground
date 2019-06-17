@@ -1,6 +1,7 @@
 const db = require('../../models');
 const { SESSION_TOKEN_TYPES } = require('../../utils/constants');
 const { Error401 } = require('../../utils/httpErrors');
+const { BadParameters } = require('../../utils/coreErrors');
 const { hashRefreshToken } = require('../../utils/refreshToken');
 const { generateAccessToken } = require('../../utils/accessToken');
 
@@ -13,6 +14,9 @@ const { generateAccessToken } = require('../../utils/accessToken');
  * gladys.session.getAccessToken('xxxx');
  */
 async function getAccessToken(refreshToken, scope) {
+  if (!refreshToken || refreshToken.length === 0) {
+    throw new BadParameters();
+  }
   const refreshTokenHash = hashRefreshToken(refreshToken);
 
   const session = await db.Session.findOne({

@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const { ACTION_LIST } = require('../utils/constants');
 const { addSelector } = require('../utils/addSelector');
+const iconList = require('../config/icons.json');
 
 const actionSchema = Joi.array().items(
   Joi.array().items(
@@ -36,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       icon: {
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM(iconList),
       },
       selector: {
         allowNull: false,

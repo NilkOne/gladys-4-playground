@@ -9,11 +9,15 @@ const StateManager = require('../../../lib/state');
 const event = new EventEmitter();
 
 const testService = {
-  poll: fake.resolves(true),
+  device: {
+    poll: fake.resolves(true),
+  },
 };
 
 const testServiceBroken = {
-  poll: fake.rejects(true),
+  device: {
+    poll: fake.rejects(true),
+  },
 };
 
 describe('Device', () => {
@@ -65,6 +69,6 @@ describe('Device', () => {
         name: 'doesnotexist',
       },
     });
-    return assert.isRejected(promise, 'Service doesnotexist does not have a poll function.');
+    return assert.isRejected(promise, 'Service doesnotexist does not have a device.poll function.');
   });
 });

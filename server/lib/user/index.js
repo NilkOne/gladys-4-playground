@@ -10,9 +10,10 @@ const { forgotPassword } = require('./user.forgotPassword');
 const { update } = require('./user.update');
 const { updatePassword } = require('./user.updatePassword');
 
-const User = function User(session, stateManager) {
+const User = function User(session, stateManager, variable) {
   this.session = session;
   this.stateManager = stateManager;
+  this.variable = variable;
 };
 
 User.prototype.create = create;

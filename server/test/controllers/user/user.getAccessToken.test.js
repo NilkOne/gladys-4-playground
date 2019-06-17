@@ -14,6 +14,15 @@ describe('POST /api/v1/access_token', () => {
         expect(res.body).to.have.property('access_token');
       });
   });
+  it('should return error 400, empty refresh token', async () => {
+    await request
+      .post('/api/v1/access_token')
+      .send({
+        refresh_token: null,
+      })
+      .expect('Content-Type', /json/)
+      .expect(400);
+  });
   it('should return 401 unauthorized', async () => {
     await request
       .post('/api/v1/access_token')

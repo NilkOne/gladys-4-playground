@@ -15,6 +15,14 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
+      user_id: {
+        allowNull: true,
+        type: DataTypes.UUID,
+        references: {
+          model: 't_user',
+          key: 'id',
+        },
+      },
       name: {
         allowNull: false,
         type: DataTypes.STRING,
@@ -35,6 +43,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'service_id',
       targetKey: 'id',
       as: 'service',
+    });
+    variable.belongsTo(models.User, {
+      foreignKey: 'user_id',
+      targetKey: 'id',
+      as: 'user',
     });
   };
 
