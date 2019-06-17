@@ -6,4 +6,4 @@ module.exports['rtsp-camera'] = require('./rtsp-camera');
 module.exports.telegram = require('./telegram');
 module.exports.usb = require('./usb');
 module.exports.zwave = require('./zwave');
-module.exports.zwave = require('./sonos');
+module.exports.sonos = require('./sonos');
