@@ -1,4 +1,4 @@
-const { getDevices } = require('./music.getDevices');
+const getDevices = require('./music.getDevices');
 const play = require('./music.play');
 const pause = require('./music.pause');
 
