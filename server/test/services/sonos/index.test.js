@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const proxyquire = require('proxyquire').noCallThru();
-// const MockedSonos = require('./mocks.test');
+const MockedSonos = require('./mocks.test');
 
 const SonosService = proxyquire('../../../services/sonos/index', {
 //   sonosApi: MockedSonos,
@@ -8,7 +8,7 @@ const SonosService = proxyquire('../../../services/sonos/index', {
 
 // describe('SonosService.music', () => {
 //   const sonosService = SonosService();
-//   const deviceIp = "192.168.1.99";
+//   const deviceIp = '192.168.1.99';
 //   it('should play the speaker', async () => {
 //     await sonosService.music.play(deviceIp);
 //   });
@@ -17,10 +17,16 @@ const SonosService = proxyquire('../../../services/sonos/index', {
 //   });
 // });
 
-console.log('Test manuel');
-const sonosService = SonosService();
-const deviceIp = "192.168.1.99";
-sonosService.music.pause(deviceIp);
-
-sonosService.music.getDevices();
-console.log('Fin du test manuel');
+describe.only('SonosService', () => {
+    const sonosService = SonosService();
+    it('should have start function', () => {
+      expect(sonosService)
+        .to.have.property('start')
+        .and.be.instanceOf(Function);
+    });
+    it('should have stop function', () => {
+      expect(sonosService)
+        .to.have.property('stop')
+        .and.be.instanceOf(Function);
+    });
+});

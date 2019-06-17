@@ -1,0 +1,43 @@
+{
+  "devices": [
+    {
+      "id": "1",
+      "name": "Living Room",
+      "type": "One",
+      "modelid": "ONE",
+      "manufacturername": "Sonos",
+      "ip": "192.168.1.98",
+      "swversion": "10.2",
+      "state": {
+        "playing": true,
+        "volume": 15
+      }
+    },
+    {
+      "id": "2",
+      "name": "Bath Room",
+      "type": "Play:1",
+      "modelid": "PLAY1",
+      "manufacturername": "Sonos",
+      "ip": "192.168.1.97",
+      "swversion": "10.2",
+      "state": {
+        "playing": false,
+        "volume": 10
+      }
+    },
+    {
+      "id": "3",
+      "name": "Office",
+      "type": "Play:1",
+      "modelid": "PLAY1",
+      "manufacturername": "Sonos",
+      "ip": "192.168.1.99",
+      "swversion": "10.2",
+      "state": {
+        "playing": true,
+        "volume": 40
+      }
+    }
+  ]
+}
