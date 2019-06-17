@@ -47,6 +47,7 @@ import ZwaveNodePage from '../routes/integration/all/zwave/node-page';
 import ZwaveNetworkPage from '../routes/integration/all/zwave/network-page';
 import ZwaveSettingsPage from '../routes/integration/all/zwave/settings-page';
 import RtspCameraPage from '../routes/integration/all/rtsp-camera';
+import SonosPage from '../routes/integration/all/sonos';
 
 const defaultState = getDefaultState();
 const store = createStore(defaultState);
@@ -95,6 +96,7 @@ const AppRouter = connect(
         <ZwaveNetworkPage path="/dashboard/integration/device/zwave/network" />
         <ZwaveSettingsPage path="/dashboard/integration/device/zwave/settings" />
         <RtspCameraPage path="/dashboard/integration/device/rtsp-camera" />
+        <SonosPage path="/dashboard/integration/music/sonos" />
 
         <ChatPage path="/dashboard/chat" />
         <MapPage path="/dashboard/maps" />
