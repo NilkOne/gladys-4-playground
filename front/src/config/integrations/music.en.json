@@ -1,0 +1,8 @@
+[
+  {
+    "key": "sonos",
+    "name": "Sonos",
+    "description": "Control your Sonos devices.",
+    "img": "/assets/integrations/cover/sonos.jpg"
+  }
+]

@@ -1,11 +1,13 @@
 import deviceEn from './device.en.json';
 import communicationEn from './communication.en.json';
+import musicEn from './music.en.json';
 
 const integrations = {
   en: {
-    totalSize: deviceEn.length + communicationEn.length,
+    totalSize: deviceEn.length + communicationEn.length + musicEn.length,
     device: deviceEn,
-    communication: communicationEn
+    communication: communicationEn,
+    music: musicEn
   }
 };
 
@@ -14,6 +16,10 @@ communicationEn.forEach(integration => {
 });
 
 deviceEn.forEach(integration => {
+  integrations.en[integration.key] = integration;
+});
+
+musicEn.forEach(integration => {
   integrations.en[integration.key] = integration;
 });
 

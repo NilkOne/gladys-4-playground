@@ -37,6 +37,7 @@ const IntegrationMenu = connect(
 
       <Link
         activeClassName="active"
+        onClick={refreshIntegrations('calendar')}
         href="/dashboard/integration/calendar"
         class="list-group-item list-group-item-action d-flex align-items-center"
       >
@@ -48,6 +49,7 @@ const IntegrationMenu = connect(
 
       <Link
         activeClassName="active"
+        onClick={refreshIntegrations('music')}
         href="/dashboard/integration/music"
         class="list-group-item list-group-item-action d-flex align-items-center"
       >
@@ -59,6 +61,7 @@ const IntegrationMenu = connect(
 
       <Link
         activeClassName="active"
+        onClick={refreshIntegrations('health')}
         href="/dashboard/integration/health"
         class="list-group-item list-group-item-action d-flex align-items-center"
       >
@@ -70,6 +73,7 @@ const IntegrationMenu = connect(
 
       <Link
         activeClassName="active"
+        onClick={refreshIntegrations('weather')}
         href="/dashboard/integration/weather"
         class="list-group-item list-group-item-action d-flex align-items-center"
       >
@@ -81,6 +85,7 @@ const IntegrationMenu = connect(
 
       <Link
         activeClassName="active"
+        onClick={refreshIntegrations('navigation')}
         href="/dashboard/integration/navigation"
         class="list-group-item list-group-item-action d-flex align-items-center"
       >
