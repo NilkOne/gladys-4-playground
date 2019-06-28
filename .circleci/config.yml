@@ -1,4 +1,36 @@
 version: 2.1
+
+shared: &shared
+  docker:
+    - image: docker:18.06.3-ce-git
+  working_directory: ~/gladys-build
+  steps:
+    - attach_workspace:
+        at: ~/gladys-build-front
+    - checkout:
+        path: ~/gladys-build
+    - setup_remote_docker:
+        docker_layer_caching: true
+    - run:
+        name: Copy build front folder
+        command: cp -r ~/gladys-build-front/front/build/. ~/gladys-build/static
+    - run:
+        name: Show front folder
+        command: ls ~/gladys-build/static
+    - run:
+        name: Install build dependencies.
+        command: apk add --no-cache bash curl git jq make perl
+    - run:
+        name: Add dynamic shared vars to env.
+        command: |
+          .circleci/load_env.sh
+    - run:
+        name: Build and push Docker image.
+        command: |
+          source $BASH_ENV
+          .circleci/build-image.sh
+        no_output_timeout: 2h
+
 jobs:
   test-server:
     working_directory: ~/gladys-test # directory where steps will run
@@ -67,9 +99,70 @@ jobs:
       - run:
           name: Run eslint
           command: npm run eslint
+  build-front:
+    working_directory: ~/gladys-build
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run:
+          name: Build Front
+          command: 'cd front && npm install && npm run build'
+      - persist_to_workspace:
+          root: ~/gladys-build
+          paths:
+            - front/build
+
+  build-armhf:
+    <<: *shared
+    environment:
+      QEMU_ARCH: arm
+      TAG: arm
+      TARGET: arm32v6
+  build-amd64:
+    <<: *shared
+    environment:
+      QEMU_ARCH: amd64
+      TAG: amd64
+      TARGET: amd64
+  build-i386:
+    <<: *shared
+    environment:
+      QEMU_ARCH: i386
+      TAG: i386
+      TARGET: i386
+  build-arm64v8:
+    <<: *shared
+    environment:
+      QEMU_ARCH: aarch64
+      TAG: arm64v8
+      TARGET: arm64v8
+
 workflows:
   version: 2
   build_and_test:
     jobs:
       - test-server
       - test-front
+      - build-front
+      - build-armhf:
+          requires:
+            - build-front
+          filters:
+            tags:
+              only: /.*/
+      - build-amd64:
+          requires:
+            - build-front
+      - build-i386:
+          requires:
+            - build-front
+          filters:
+            tags:
+              only: /.*/
+      - build-arm64v8:
+          requires:
+            - build-front
+          filters:
+            tags:
+              only: /.*/

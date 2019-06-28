@@ -6,6 +6,7 @@ const MAX_RETRY = 3;
 export class HttpClient {
   constructor(session) {
     this.session = session;
+    this.localApiUrl = config.localApiUrl || window.location.origin;
   }
 
   getAxiosHeaders() {
@@ -18,7 +19,7 @@ export class HttpClient {
 
   async refreshAccessToken() {
     const { data } = await axios({
-      baseURL: config.localApiUrl,
+      baseURL: this.localApiUrl,
       url: '/api/v1/access_token',
       method: 'post',
       data: {
@@ -35,7 +36,7 @@ export class HttpClient {
     }
     try {
       const { data } = await axios({
-        baseURL: config.localApiUrl,
+        baseURL: this.localApiUrl,
         url,
         method,
         params: query,

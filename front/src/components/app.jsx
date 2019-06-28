@@ -12,6 +12,7 @@ import Header from './header';
 import Layout from './layout';
 import Redirect from './router/Redirect';
 import Login from '../routes/login';
+import Error from '../routes/error';
 import ForgotPassword from '../routes/forgot-password';
 import ResetPassword from '../routes/reset-password';
 
@@ -42,10 +43,12 @@ import SettingsBackup from '../routes/settings/settings-backup';
 
 // Integrations
 import TelegramPage from '../routes/integration/all/telegram';
+import DarkSkyPage from '../routes/integration/all/darksky';
 import PhilipsHuePage from '../routes/integration/all/philips-hue';
 import ZwaveNodePage from '../routes/integration/all/zwave/node-page';
 import ZwaveNetworkPage from '../routes/integration/all/zwave/network-page';
 import ZwaveSettingsPage from '../routes/integration/all/zwave/settings-page';
+import ZwaveSetupPage from '../routes/integration/all/zwave/setup-page';
 import RtspCameraPage from '../routes/integration/all/rtsp-camera';
 import SonosPage from '../routes/integration/all/sonos';
 
@@ -53,20 +56,22 @@ const defaultState = getDefaultState();
 const store = createStore(defaultState);
 
 const AppRouter = connect(
-  'currentUrl,user,profilePicture,showDropDown',
+  'currentUrl,user,profilePicture,showDropDown,showCollapsedMenu',
   actions
-)(({ currentUrl, user, profilePicture, showDropDown, handleRoute, toggleDropDown, logout }) => (
+)(props => (
   <div id="app">
-    <Layout currentUrl={currentUrl}>
+    <Layout currentUrl={props.currentUrl}>
       <Header
-        currentUrl={currentUrl}
-        user={user}
-        profilePicture={profilePicture}
-        toggleDropDown={toggleDropDown}
-        showDropDown={showDropDown}
-        logout={logout}
+        currentUrl={props.currentUrl}
+        user={props.user}
+        profilePicture={props.profilePicture}
+        toggleDropDown={props.toggleDropDown}
+        showDropDown={props.showDropDown}
+        toggleCollapsedMenu={props.toggleCollapsedMenu}
+        showCollapsedMenu={props.showCollapsedMenu}
+        logout={props.logout}
       />
-      <Router onChange={handleRoute}>
+      <Router onChange={props.handleRoute}>
         <Login path="/login" />
         <ForgotPassword path="/forgot-password" />
         <ResetPassword path="/reset-password" />
@@ -90,11 +95,13 @@ const AppRouter = connect(
         <IntegrationPage path="/dashboard/integration/navigation" />
 
         <TelegramPage path="/dashboard/integration/communication/telegram" />
+        <DarkSkyPage path="/dashboard/integration/weather/darksky" />
         <PhilipsHuePage path="/dashboard/integration/device/philips-hue" />
         <Redirect path="/dashboard/integration/device/zwave" to="/dashboard/integration/device/zwave/node" />
         <ZwaveNodePage path="/dashboard/integration/device/zwave/node" />
         <ZwaveNetworkPage path="/dashboard/integration/device/zwave/network" />
         <ZwaveSettingsPage path="/dashboard/integration/device/zwave/settings" />
+        <ZwaveSetupPage path="/dashboard/integration/device/zwave/setup" />
         <RtspCameraPage path="/dashboard/integration/device/rtsp-camera" />
         <SonosPage path="/dashboard/integration/music/sonos" />
 
@@ -113,6 +120,7 @@ const AppRouter = connect(
         <SettingsSystemPage path="/dashboard/settings/system" />
         <SettingsGateway path="/dashboard/settings/gateway" />
         <SettingsBackup path="/dashboard/settings/backup" />
+        <Error type="404" default />
       </Router>
     </Layout>
   </div>

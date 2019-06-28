@@ -21,12 +21,12 @@ function valueChanged(nodeId, comClass, value) {
       this.nodes[nodeId].classes[comClass][value.index].value,
       value.value,
     );
+    this.nodes[nodeId].classes[comClass][value.index] = value;
+    this.eventManager.emit(EVENTS.DEVICE.NEW_STATE, {
+      device_feature_external_id: getDeviceFeatureExternalId(value),
+      state: value.value,
+    });
   }
-  this.nodes[nodeId].classes[comClass][value.index] = value;
-  this.eventManager.emit(EVENTS.DEVICE.NEW_STATE, {
-    device_feature_external_id: getDeviceFeatureExternalId(value),
-    state: value.value,
-  });
 }
 
 module.exports = {

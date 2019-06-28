@@ -68,7 +68,7 @@ class RtspCameraBox extends Component {
 
   render(props, { loading, saveError, testConnectionError }) {
     return (
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="card">
           <div
             class={cx('dimmer', {

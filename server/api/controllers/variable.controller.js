@@ -1,4 +1,5 @@
 const asyncMiddleware = require('../middlewares/asyncMiddleware');
+const { NotFoundError } = require('../../utils/coreErrors');
 
 module.exports = function VariableController(gladys) {
   /**
@@ -12,6 +13,23 @@ module.exports = function VariableController(gladys) {
     const service = await gladys.service.getLocalServiceByName(req.params.service_name);
     const variable = await gladys.variable.setValue(req.params.variable_key, req.body.value, service.id);
     res.json(variable);
+  }
+
+  /**
+   * @api {get} /api/service/:service_name/variable/:variable_key Get service variable
+   * @apiName GetVariableByService
+   * @apiGroup Variable
+   *
+   */
+  async function getByLocalService(req, res) {
+    const service = await gladys.service.getLocalServiceByName(req.params.service_name);
+    const value = await gladys.variable.getValue(req.params.variable_key, service.id);
+    if (!value) {
+      throw new NotFoundError('VARIABLE_NOT_FOUND');
+    }
+    res.json({
+      value,
+    });
   }
 
   /**
@@ -29,5 +47,6 @@ module.exports = function VariableController(gladys) {
   return Object.freeze({
     setForLocalService: asyncMiddleware(setForLocalService),
     setValue: asyncMiddleware(setValue),
+    getByLocalService: asyncMiddleware(getByLocalService),
   });
 };

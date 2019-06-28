@@ -43,24 +43,20 @@ function formatResults(options, result) {
 
   if (dataPoint.icon.search('snow') !== -1) {
     dataToReturn.weather = 'snow';
-  }
-  if (dataPoint.icon.search('rain') !== -1) {
+  } else if (dataPoint.icon.search('rain') !== -1) {
     dataToReturn.weather = 'rain';
-  }
-  if (dataPoint.icon.search('clear') !== -1) {
+  } else if (dataPoint.icon.search('clear') !== -1) {
     dataToReturn.weather = 'clear';
-  }
-  if (dataPoint.icon.search('cloud') !== -1) {
+  } else if (dataPoint.icon.search('cloud') !== -1) {
     dataToReturn.weather = 'cloud';
-  }
-  if (dataPoint.icon.search('fog') !== -1) {
+  } else if (dataPoint.icon.search('fog') !== -1) {
     dataToReturn.weather = 'fog';
-  }
-  if (dataPoint.icon.search('sleet') !== -1) {
+  } else if (dataPoint.icon.search('sleet') !== -1) {
     dataToReturn.weather = 'sleet';
-  }
-  if (dataPoint.icon.search('wind') !== -1) {
+  } else if (dataPoint.icon.search('wind') !== -1) {
     dataToReturn.weather = 'wind';
+  } else {
+    dataToReturn.weather = 'unknown';
   }
 
   return dataToReturn;

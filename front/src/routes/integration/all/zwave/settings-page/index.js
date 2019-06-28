@@ -6,19 +6,20 @@ import SettingsTab from './SettingsTab';
 import integrationConfig from '../../../../../config/integrations';
 
 @connect(
-  'user,usbPorts,zwaveInfos',
+  'user,usbPorts,zwaveInfos,zwaveDriverPath',
   actions
 )
 class ZwaveSettingsPage extends Component {
   componentWillMount() {
     this.props.getUsbPorts();
     this.props.getInfos();
+    this.props.getCurrentZwaveDriverPath();
   }
 
-  render({ user, usbPorts, zwaveInfos }, {}) {
+  render(props, {}) {
     return (
-      <ZwavePage integration={integrationConfig[user.language].zwave}>
-        <SettingsTab usbPorts={usbPorts} zwaveInfos={zwaveInfos} />
+      <ZwavePage integration={integrationConfig[props.user.language].zwave}>
+        <SettingsTab {...props} />
       </ZwavePage>
     );
   }

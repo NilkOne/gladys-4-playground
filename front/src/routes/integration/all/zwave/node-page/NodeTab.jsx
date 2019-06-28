@@ -1,35 +1,65 @@
-import { Text, MarkupText } from 'preact-i18n';
+import { Text, Localizer } from 'preact-i18n';
+import cx from 'classnames';
+
+import { RequestStatus } from '../../../../../utils/consts';
+import Device from './Device';
+import style from './style.css';
 
 const NodeTab = ({ children, ...props }) => (
-  <div class="dimmer">
-    <div class="dimmer-content">
-      <h2>
-        <Text id="integration.zwave.title" />
-      </h2>
-      <p>
-        <MarkupText id="integration.zwave.introduction" />
-      </p>
-
-      <h3>List of available Z-wave nodes</h3>
-      <div class="card-columns">
-        {props.zwaveNodes &&
-          props.zwaveNodes.map((zwaveNode, index) => (
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">{zwaveNode.product}</h3>
-              </div>
-              <div class="card-body">
-                <b>Manufacturer:</b> {zwaveNode.manufacturer} <br />
-                <b>Type:</b> {zwaveNode.type}
-              </div>
-            </div>
-          ))}
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <Text id="integration.zwave.device.title" />
+      </h3>
+      <div class="page-options d-flex">
+        <select onChange={props.changeOrderDir} class="form-control custom-select w-auto">
+          <option value="asc">
+            <Text id="global.orderDirAsc" />
+          </option>
+          <option value="desc">
+            <Text id="global.orderDirDesc" />
+          </option>
+        </select>
+        <div class="input-icon ml-2">
+          <span class="input-icon-addon">
+            <i class="fe fe-search" />
+          </span>
+          <Localizer>
+            <input
+              type="text"
+              class="form-control w-10"
+              placeholder={<Text id="integration.zwave.device.search" />}
+              onInput={props.debouncedSearch}
+            />
+          </Localizer>
+        </div>
       </div>
-      <dib class="form-group">
-        <button class="btn btn-info btn-sm" onClick={props.getBridges}>
-          <Text id="integration.philipsHue.searchForBridgesButton" /> <i class="fe fe-radio" />
-        </button>
-      </dib>
+    </div>
+    <div class="card-body">
+      <div
+        class={cx('dimmer', {
+          active: props.getZwaveDevicesStatus === RequestStatus.Getting
+        })}
+      >
+        <div class="loader" />
+        <div class="dimmer-content">
+          {props.getZwaveDevicesStatus === RequestStatus.Getting && <div class={style.emptyDiv} />}
+          <div class="row">
+            {props.zwaveDevices &&
+              props.zwaveDevices.map((zwaveDevice, index) => (
+                <Device
+                  device={zwaveDevice}
+                  deviceIndex={index}
+                  houses={props.houses}
+                  updateDeviceProperty={props.updateDeviceProperty}
+                  saveDevice={props.saveDevice}
+                  deleteDevice={props.deleteDevice}
+                />
+              ))}
+            {props.zwaveDevices && props.zwaveDevices.length === 0 && <Text id="integration.zwave.device.noDevices" />}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 );

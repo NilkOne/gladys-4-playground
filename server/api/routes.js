@@ -117,6 +117,7 @@ function setupRoutes(gladys) {
   // device
   router.post('/api/v1/device', deviceController.create);
   router.get('/api/v1/device', deviceController.get);
+  router.get('/api/v1/service/:service_name/device', deviceController.getDevicesByService);
   router.get('/api/v1/device/:device_selector', deviceController.getBySelector);
   router.delete('/api/v1/device/:device_selector', deviceController.destroy);
 
@@ -168,6 +169,7 @@ function setupRoutes(gladys) {
 
   // variable
   router.post('/api/v1/service/:service_name/variable/:variable_key', variableController.setForLocalService);
+  router.get('/api/v1/service/:service_name/variable/:variable_key', variableController.getByLocalService);
   router.post('/api/v1/variable/:variable_key', variableController.setValue);
 
   // session

@@ -1,4 +1,4 @@
-import { TelegramSaveApiKeyStatus, TelegramGetApiKeyStatus } from '../../../../utils/consts';
+import { RequestStatus } from '../../../../utils/consts';
 
 const actions = store => ({
   updateTelegramApiKey(state, e) {
@@ -8,34 +8,42 @@ const actions = store => ({
   },
   async getTelegramApiKey(state) {
     store.setState({
-      telegramGetApiKeyStatus: TelegramGetApiKeyStatus.Getting
+      telegramGetApiKeyStatus: RequestStatus.Getting
     });
     try {
       const variable = await state.httpClient.get('/api/v1/service/telegram/variable/TELEGRAM_API_KEY');
+      const { link } = await state.httpClient.get('/api/v1/service/telegram/link');
       store.setState({
         telegramApiKey: variable.value,
-        telegramGetApiKeyStatus: TelegramGetApiKeyStatus.Success
+        telegramCustomLink: link,
+        telegramGetApiKeyStatus: RequestStatus.Success
       });
     } catch (e) {
       store.setState({
-        TelegramGetApiKeyStatus: TelegramGetApiKeyStatus.GetError
+        telegramGetApiKeyStatus: RequestStatus.Error
       });
     }
   },
   async saveTelegramApiKey(state) {
     store.setState({
-      telegramSaveApiKeyStatus: TelegramSaveApiKeyStatus.Saving
+      telegramSaveApiKeyStatus: RequestStatus.Getting
     });
     try {
+      // save telegram api key
       await state.httpClient.post('/api/v1/service/telegram/variable/TELEGRAM_API_KEY', {
         value: state.telegramApiKey
       });
+      // start service
+      await state.httpClient.post('/api/v1/service/telegram/start');
+      // get custom link
+      const { link } = await state.httpClient.get('/api/v1/service/telegram/link');
       store.setState({
-        telegramSaveApiKeyStatus: TelegramSaveApiKeyStatus.Success
+        telegramCustomLink: link,
+        telegramSaveApiKeyStatus: RequestStatus.Success
       });
     } catch (e) {
       store.setState({
-        telegramSaveApiKeyStatus: TelegramSaveApiKeyStatus.SavingError
+        telegramSaveApiKeyStatus: RequestStatus.Error
       });
     }
   }

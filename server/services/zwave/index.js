@@ -16,7 +16,7 @@ module.exports = function ZwaveService(gladys, serviceId) {
     logger.info('Starting zwave service');
     const zwaveDriverPath = await gladys.variable.getValue('ZWAVE_DRIVER_PATH', serviceId);
     if (!zwaveDriverPath) {
-      throw new ServiceNotConfiguredError('No zwave driver path found. Not starting ZWave service.');
+      throw new ServiceNotConfiguredError('ZWAVE_DRIVER_PATH_NOT_FOUND');
     }
     zwaveManager.connect(zwaveDriverPath);
   }
@@ -35,6 +35,6 @@ module.exports = function ZwaveService(gladys, serviceId) {
   return Object.freeze({
     start,
     stop,
-    controllers: ZwaveController(zwaveManager),
+    controllers: ZwaveController(gladys, zwaveManager, serviceId),
   });
 };

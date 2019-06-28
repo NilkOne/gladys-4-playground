@@ -1,7 +1,5 @@
 const logger = require('../../../../utils/logger');
-const { EVENTS } = require('../../../../utils/constants');
-const { getCategory } = require('../utils/getCategory');
-const { getDeviceFeatureExternalId } = require('../utils/externalId');
+const { EVENTS, WEBSOCKET_MESSAGE_TYPES } = require('../../../../utils/constants');
 
 /**
  * @description When a node is ready.
@@ -21,13 +19,8 @@ function nodeReady(nodeId, nodeInfo) {
   this.nodes[nodeId].name = nodeInfo.name;
   this.nodes[nodeId].loc = nodeInfo.loc;
   this.nodes[nodeId].ready = true;
-  const newDevice = {
-    name: this.nodes[nodeId].product,
-    service_id: this.serviceId,
-    external_id: `zwave:node_id:${nodeId}`,
-  };
-  const features = [];
-  const params = [];
+
+  // enable poll if needed
   const comclasses = Object.keys(this.nodes[nodeId].classes);
   comclasses.forEach((comclass) => {
     const values = this.nodes[nodeId].classes[comclass];
@@ -40,32 +33,11 @@ function nodeReady(nodeId, nodeInfo) {
       default:
         break;
     }
-    const indexes = Object.keys(values);
-    indexes.forEach((idx) => {
-      const { min, max } = values[idx];
-
-      if (values[idx].genre === 'user') {
-        const { category, type } = getCategory(values[idx]);
-        features.push({
-          name: `${values[idx].label} - ${this.nodes[nodeId].product} -  Node ${nodeId}`,
-          category,
-          type,
-          external_id: getDeviceFeatureExternalId(values[idx]),
-          read_only: values[idx].read_only,
-          unit: values[idx].units,
-          has_feedback: true,
-          min,
-          max,
-        });
-      } else {
-        params.push({
-          name: `${values[idx].label}-${values[idx].value_id}`,
-          value: values[idx].value || '',
-        });
-      }
-    });
   });
-  this.eventManager.emit(EVENTS.DEVICE.NEW, newDevice, features, params);
+  this.eventManager.emit(EVENTS.WEBSOCKET.SEND_ALL, {
+    type: WEBSOCKET_MESSAGE_TYPES.ZWAVE.NODE_READY,
+    payload: this.nodes[nodeId],
+  });
 }
 
 module.exports = {

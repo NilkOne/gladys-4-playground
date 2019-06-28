@@ -11,6 +11,9 @@ const EditWeatherBox = ({ children, ...props }) => (
         <Text id="dashboard.boxes.weather.editHouseLabel" />
       </label>
       <select onChange={props.updateBoxHouse} class="form-control">
+        <option>
+          <Text id="global.emptySelectOption" />
+        </option>
         {props.houses &&
           props.houses.map(house => (
             <option selected={house.selector === props.box.house} value={house.selector}>

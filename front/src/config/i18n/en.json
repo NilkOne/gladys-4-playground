@@ -3,7 +3,8 @@
     "needHelpText": "Need help? Join us on <a href=\"https://community.gladysassistant.com/\"> Gladys Community</a>.",
     "new": "New",
     "orderDirAsc": "A - Z",
-    "orderDirDesc": "Z - A"
+    "orderDirDesc": "Z - A",
+    "emptySelectOption": "---------"
   },
   "login": {
     "title": "Gladys Assistant",
@@ -130,7 +131,8 @@
         "houseHasNoCoordinates": "Your house has no coordinates defined. Go to Gladys parameters to define the position of your house.",
         "serviceNotConfigured": "The DarkSky service is not configured. Please go to the 'Integrations' tab, and configure the DarkSky service.",
         "requestToThirdPartyFailed": "The request to DarkSKy API failed. Is your Gladys instance connected to the internet? Please go to the DarkSky configuration panel to troubleshoot this problem.",
-        "clickHere": "Click here to access the DarkSky configuration panel."
+        "clickHere": "Click here to access the DarkSky configuration panel.",
+        "unknownError": "We are unable to get the weather for this house. Did you define a house for this box?"
       },
       "devicesInRoom": {
         "editRoomLabel": "Select the room you want to display here."
@@ -186,7 +188,7 @@
       "nameLabel": "Camera Name",
       "namePlaceholder": "Enter the name of your camera",
       "roomLabel": "Room",
-      "urlLabel": "Camera RTSP Flux",
+      "urlLabel": "Camera RTSP/HTTP Flux",
       "urlPlaceholder": "Ex: rtsp://[username]:[password]@[camera-ip-address]:554/media",
       "noCameraFound": "No camera found.",
       "testConnectionButton": "Test connection",
@@ -202,6 +204,62 @@
       "clickToggleDescription": "Click on the toggle to imports speakers in your Gladys",
       "searchForDevicesButton": "Scan network for devices",
       "ipAddress": "IP Address:"
+    },
+    "zwave": {
+      "title": "Z-Wave",
+      "deviceTab": "Devices",
+      "networkTab": "Network",
+      "settingsTab": "Settings",
+      "setupTab": "Setup",
+      "device": {
+        "title": "Z-Wave Devices",
+        "search": "Search devices",
+        "noDevices": "No Z-Wave devices added yet.",
+        "scanButton": "Scan",
+        "nameLabel": "Name",
+        "featuresLabel": "Features",
+        "noFeatures": "No features",
+        "saveButton": "Save",
+        "deleteButton": "Delete"
+      },
+      "setup": {
+        "title": "Z-Wave Devices",
+        "addNodeButton": "Add",
+        "addNodeSecureButton": "Add Secure",
+        "healNetworkButton": "Heal",
+        "removeNode": "Remove",
+        "scanButton": "Scan",
+        "noZwaveDevices": "No Z-Wave devices found. Have you selected your dongle USB port in Settings?",
+        "manufacturer": "Manufacturer",
+        "type": "Type",
+        "scanInProgressText": "Scan in Progress...",
+        "createDeviceInGladys": "Connect in Gladys",
+        "features": "Features",
+        "params": "Params",
+        "noFeatures": "No features",
+        "zwaveNotConfiguredError": "Z-wave is not configured. Please select the USB port where you Z-Wave key is plugged in settings.",
+        "createDeviceError": "There was an error while creating this device in Gladys.",
+        "deviceCreatedSuccess": "The device was added with success."
+      },
+      "network": {
+        "title": "Z-Wave Network"
+      },
+      "settings": {
+        "title": "Z-Wave Settings",
+        "description": "To use Z-Wave in Gladys, you need to have a Z-Wave USB Stick connected to your Gladys instance.",
+        "zwaveUsbDriverPathLabel": "Select the USB port where your Z-Wave stick is connected",
+        "connectButton": "Connect",
+        "disconnectButton": "Disconnect"
+      }
+    },
+    "darkSky": {
+      "title": "DarkSky API",
+      "introduction": "This integration helps you integrate with DarkSky API to get the weather in Gladys.",
+      "instructions": "You first need to create an account on DarkSky API website:",
+      "apiKeyLabel": "Then, enter your API key here:",
+      "apiKeyPlaceholder": "Enter DarkSky API key",
+      "saveButton": "Save",
+      "instructionsToUse": "To use this integration, go to the dashboard and create a weather box."
     }
   },
   "editScene": {
@@ -426,5 +484,39 @@
     "confirmRestore": "Confirm",
     "cancelRestore": "Cancel",
     "restoreInProgressTitle": "Restoring backup in progress..."
+  },
+  "deviceFeatureCategory": {
+    "light": "Light",
+    "battery": "Battery",
+    "temperature-sensor": "Temperature",
+    "motion-sensor": "Motion",
+    "light-sensor": "Luminosity",
+    "camera": "Camera",
+    "unknown": "Unknown"
+  },
+  "errorPage": {
+    "title": "Oops... This page does not exist.",
+    "description": "If you think it's a Gladys Assistant bug, please report it to our team!",
+    "goBack": "Go Back"
+  },
+  "chat": {
+    "whatCanYouAsk": "What can I ask?",
+    "whatsTheWeatherLike": "What's the weather like?",
+    "whatsTheTemperatureKitchen": "What's the temperature in the kitchen?",
+    "showCameraImage": "Show me camera image in the kitchen"
+  },
+  "header": {
+    "gladysAssistant": "Gladys Assistant",
+    "home": "Home",
+    "chat": "Chat",
+    "devices": "Devices",
+    "integrations": "Integrations",
+    "calendar": "Calendar",
+    "maps": "Maps",
+    "scenes": "Scenes",
+    "profile": "Profile",
+    "settings": "Settings",
+    "needHelp": "Need help",
+    "signOut": "Sign Out"
   }
 }

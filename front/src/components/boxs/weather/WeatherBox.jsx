@@ -3,7 +3,12 @@ import { connect } from 'unistore/preact';
 import { Text } from 'preact-i18n';
 import { Link } from 'preact-router/match';
 import actions from '../../../actions/dashboard/boxes/weather';
-import { GetWeatherStatus, DASHBOARD_BOX_STATUS_KEY, DASHBOARD_BOX_DATA_KEY } from '../../../utils/consts';
+import {
+  RequestStatus,
+  GetWeatherStatus,
+  DASHBOARD_BOX_STATUS_KEY,
+  DASHBOARD_BOX_DATA_KEY
+} from '../../../utils/consts';
 import get from 'get-value';
 
 const padding = {
@@ -12,6 +17,8 @@ const padding = {
   paddingTop: '10px',
   paddingBottom: '10px'
 };
+
+const BOX_REFRESH_INTERVAL_MS = 30 * 60 * 1000;
 
 const WeatherBox = ({ children, ...props }) => (
   <div class="card">
@@ -42,6 +49,31 @@ const WeatherBox = ({ children, ...props }) => (
               <Text id="dashboard.boxes.weather.serviceNotConfigured" />
             </span>
           </p>
+        </div>
+      </div>
+    )}
+    {props.boxStatus === RequestStatus.Error && (
+      <div>
+        <h4 class="card-header">
+          <Text id="dashboard.boxTitle.weather" />
+        </h4>
+        <div class="card-body">
+          <p class="alert alert-danger">
+            <i class="fe fe-bell" />
+            <span class="pl-2">
+              <Text id="dashboard.boxes.weather.unknownError" />
+            </span>
+          </p>
+        </div>
+      </div>
+    )}
+    {props.boxStatus === RequestStatus.Getting && !props.weather && (
+      <div>
+        <div class="card-body">
+          <div class="dimmer active">
+            <div class="loader" />
+            <div class="dimmer-content" style={padding} />
+          </div>
         </div>
       </div>
     )}
@@ -134,7 +166,10 @@ const WeatherBox = ({ children, ...props }) => (
 )
 class WeatherBoxComponent extends Component {
   componentDidMount() {
+    // get the weather
     this.props.getWeather(this.props.box, this.props.x, this.props.y);
+    // refresh weather every interval
+    setInterval(() => this.props.getWeather(this.props.box, this.props.x, this.props.y), BOX_REFRESH_INTERVAL_MS);
   }
 
   render(props, {}) {

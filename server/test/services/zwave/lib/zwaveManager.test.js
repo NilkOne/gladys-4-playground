@@ -8,17 +8,26 @@ const ZwaveMock = require('../ZwaveMock.test');
 
 describe('zwaveManager commands', () => {
   const zwaveManager = new ZwaveManager(ZwaveMock, event, 'de051f90-f34a-4fd5-be2e-e502339ec9bc');
+  zwaveManager.connected = true;
   it('should connect to zwave driver', () => {
     zwaveManager.connect('/dev/tty1');
     assert.calledWith(zwaveManager.zwave.connect, '/dev/tty1');
   });
-  it('should disconnect', () => {
-    zwaveManager.disconnect();
-    assert.calledOnce(zwaveManager.zwave.disconnect);
+  it('should addNode', () => {
+    zwaveManager.addNode();
+    assert.calledOnce(zwaveManager.zwave.addNode);
+  });
+  it('should removeNode', () => {
+    zwaveManager.removeNode();
+    assert.calledOnce(zwaveManager.zwave.removeNode);
   });
   it('should heal network', () => {
     zwaveManager.healNetwork();
     assert.calledOnce(zwaveManager.zwave.healNetwork);
+  });
+  it('should return node neighbors', () => {
+    const nodes = zwaveManager.getNodeNeighbors();
+    expect(nodes).to.be.instanceOf(Array);
   });
   it('should refresh node params', () => {
     zwaveManager.refreshNodeParams(1);
@@ -36,6 +45,14 @@ describe('zwaveManager commands', () => {
       library_type_name: 'Static Controller',
       send_queue_count: 3,
     });
+  });
+  it('should return array of nodes', () => {
+    const nodes = zwaveManager.getNodes();
+    expect(nodes).to.be.instanceOf(Array);
+  });
+  it('should disconnect', () => {
+    zwaveManager.disconnect();
+    assert.calledOnce(zwaveManager.zwave.disconnect);
   });
 });
 
@@ -116,9 +133,5 @@ describe('zwaveManager events', () => {
   });
   it('should receive value removed', () => {
     zwaveManager.valueRemoved(1, 10, 0);
-  });
-  it('should return array of nodes', () => {
-    const nodes = zwaveManager.getNodes();
-    expect(nodes).to.be.instanceOf(Array);
   });
 });

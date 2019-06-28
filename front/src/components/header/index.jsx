@@ -1,3 +1,4 @@
+import { Text } from 'preact-i18n';
 import { h } from 'preact';
 import { Link } from 'preact-router/match';
 import { isUrlInArray } from '../../utils/url';
@@ -25,7 +26,9 @@ const Header = ({ ...props }) => {
           <div class="d-flex">
             <a class="header-brand" href="/dashboard">
               <img src="/assets/icons/favicon-96x96.png" class="header-brand-img" alt="Gladys logo" />
-              <span id="header-title">Gladys Assistant</span>
+              <span id="header-title">
+                <Text id="header.gladysAssistant" />
+              </span>
             </a>
             <div class="d-flex order-lg-2 ml-auto">
               <div class={'dropdown' + (props.showDropDown && ' show')}>
@@ -40,17 +43,17 @@ const Header = ({ ...props }) => {
                 </a>
                 <div class={'dropdown-menu dropdown-menu-right dropdown-menu-arrow' + (props.showDropDown && ' show')}>
                   <a class="dropdown-item" href="/dashboard/profile">
-                    <i class="dropdown-icon fe fe-user" /> Profile
+                    <i class="dropdown-icon fe fe-user" /> <Text id="header.profile" />
                   </a>
                   <a class="dropdown-item" href="/dashboard/settings/house">
-                    <i class="dropdown-icon fe fe-settings" /> Settings
+                    <i class="dropdown-icon fe fe-settings" /> <Text id="header.settings" />
                   </a>
                   <div class="dropdown-divider" />
-                  <a class="dropdown-item" href="/dashboard/help">
-                    <i class="dropdown-icon fe fe-help-circle" /> Need help?
+                  <a class="dropdown-item" href="https://community.gladysassistant.com/">
+                    <i class="dropdown-icon fe fe-help-circle" /> <Text id="header.needHelp" />
                   </a>
                   <a class="dropdown-item" href="" onClick={props.logout}>
-                    <i class="dropdown-icon fe fe-log-out" /> Sign out
+                    <i class="dropdown-icon fe fe-log-out" /> <Text id="header.signOut" />
                   </a>
                 </div>
               </div>
@@ -73,17 +76,17 @@ const Header = ({ ...props }) => {
               <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                 <li class="nav-item">
                   <Link activeClassName="active" href="/dashboard" class="nav-link">
-                    <i class="fe fe-home" /> Home
+                    <i class="fe fe-home" /> <Text id="header.home" />
                   </Link>
                 </li>
                 <li class="nav-item">
                   <Link activeClassName="active" href="/dashboard/chat" class="nav-link">
-                    <i class="fe fe-message-square" /> Chat
+                    <i class="fe fe-message-square" /> <Text id="header.chat" />
                   </Link>
                 </li>
                 <li class="nav-item">
                   <Link activeClassName="active" href="/dashboard/device" class="nav-link">
-                    <i class="fe fe-toggle-right" /> Devices
+                    <i class="fe fe-toggle-right" /> <Text id="header.devices" />
                   </Link>
                 </li>
                 <li class="nav-item">
@@ -91,17 +94,17 @@ const Header = ({ ...props }) => {
                     href="/dashboard/integration/device"
                     class={props.currentUrl.startsWith('/dashboard/integration') ? 'active nav-link' : 'nav-link'}
                   >
-                    <i class="fe fe-grid" /> Integrations
+                    <i class="fe fe-grid" /> <Text id="header.integrations" />
                   </Link>
                 </li>
                 <li class="nav-item">
                   <Link activeClassName="active" href="/dashboard/calendar" class="nav-link">
-                    <i class="fe fe-calendar" /> Calendar
+                    <i class="fe fe-calendar" /> <Text id="header.calendar" />
                   </Link>
                 </li>
                 <li class="nav-item">
                   <Link activeClassName="active" href="/dashboard/maps" class="nav-link">
-                    <i class="fe fe-map" /> Maps
+                    <i class="fe fe-map" /> <Text id="header.maps" />
                   </Link>
                 </li>
                 <li class="nav-item">
@@ -109,15 +112,7 @@ const Header = ({ ...props }) => {
                     href="/dashboard/scene"
                     class={props.currentUrl.startsWith('/dashboard/scene') ? 'active nav-link' : 'nav-link'}
                   >
-                    <i class="fe fe-play" /> Scene
-                  </Link>
-                </li>
-                <li class="nav-item">
-                  <Link
-                    href="/dashboard/trigger"
-                    class={props.currentUrl.startsWith('/dashboard/trigger') ? 'active nav-link' : 'nav-link'}
-                  >
-                    <i class="fe fe-zap" /> Trigger
+                    <i class="fe fe-play" /> <Text id="header.scenes" />
                   </Link>
                 </li>
               </ul>

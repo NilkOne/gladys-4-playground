@@ -18,15 +18,21 @@ async function fileToBase64(file) {
 
 async function getCropperBase64Image(cropper) {
   return new Promise((resolve, reject) => {
-    cropper
-      .getCroppedCanvas({
-        width: 100,
-        height: 100
-      })
-      .toBlob(async blob => {
-        const base64Image = await fileToBase64(blob);
-        resolve(base64Image);
-      });
+    if (!cropper) {
+      return resolve(null);
+    }
+    const canva = cropper.getCroppedCanvas({
+      width: 100,
+      height: 100
+    });
+
+    if (!canva) {
+      return resolve(null);
+    }
+    canva.toBlob(async blob => {
+      const base64Image = await fileToBase64(blob);
+      resolve(base64Image);
+    });
   });
 }
 

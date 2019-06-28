@@ -1,4 +1,5 @@
 const { ServiceNotConfiguredError } = require('../../utils/coreErrors');
+
 /**
  * @description Get the weather.
  * @param {Object} options - Options parameters.

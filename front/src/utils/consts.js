@@ -1,3 +1,5 @@
+import { DEVICE_FEATURE_CATEGORIES } from '../../../server/utils/constants';
+
 export const LoginStatus = {
   Processing: 'Processing',
   WrongCredentialsError: 'WrongCredentialsError',
@@ -58,7 +60,8 @@ export const RequestStatus = {
   NetworkError: 'NetworkError',
   ConflictError: 'ConflictError',
   ValidationError: 'ValidationError',
-  RateLimitError: 'RateLimitError'
+  RateLimitError: 'RateLimitError',
+  ServiceNotConfigured: 'ServiceNotConfigured'
 };
 
 export const GetWeatherStatus = {
@@ -69,3 +72,13 @@ export const GetWeatherStatus = {
 
 export const DASHBOARD_BOX_STATUS_KEY = 'DashboardBoxStatus';
 export const DASHBOARD_BOX_DATA_KEY = 'DashboardBoxData';
+
+export const DeviceFeatureCategoriesIcon = {
+  [DEVICE_FEATURE_CATEGORIES.BATTERY]: 'battery',
+  [DEVICE_FEATURE_CATEGORIES.CAMERA]: 'camera',
+  [DEVICE_FEATURE_CATEGORIES.MOTION_SENSOR]: 'eye',
+  [DEVICE_FEATURE_CATEGORIES.LIGHT]: 'fe-toggle-right',
+  [DEVICE_FEATURE_CATEGORIES.TEMPERATURE_SENSOR]: 'thermometer',
+  [DEVICE_FEATURE_CATEGORIES.LIGHT_SENSOR]: 'sun',
+  [DEVICE_FEATURE_CATEGORIES.UNKNOWN]: 'help-circle'
+};

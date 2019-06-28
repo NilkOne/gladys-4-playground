@@ -1,6 +1,6 @@
-import BinaryDeviceFeature from './device-features/BinaryDeviceFeature';
+// import BinaryDeviceFeature from './device-features/BinaryDeviceFeature';
 import SensorDeviceFeature from './device-features/SensorDeviceFeature';
-import MultilevelDeviceFeature from './device-features/MultiLevelDeviceFeature';
+// import MultilevelDeviceFeature from './device-features/MultiLevelDeviceFeature';
 
 const DeviceRow = ({ children, ...props }) => {
   if (props.deviceFeature.display === 0) {
@@ -13,9 +13,9 @@ const DeviceRow = ({ children, ...props }) => {
   }
 
   // else, it's not a sensor
-
+  // TODO: not working for now
   // if it's a binary
-  if (props.deviceFeature.type === 'binary') {
+  /*if (props.deviceFeature.type === 'binary') {
     return (
       <BinaryDeviceFeature
         device={props.device}
@@ -26,17 +26,10 @@ const DeviceRow = ({ children, ...props }) => {
         updateValue={props.updateValue}
       />
     );
-  }
+  }*/
 
-  // if not, we return the multilevel component
-  return (
-    <MultilevelDeviceFeature
-      deviceFeature={props.deviceFeature}
-      roomIndex={props.roomIndex}
-      deviceFeatureIndex={props.deviceFeatureIndex}
-      updateValue={props.updateValue}
-    />
-  );
+  // if not, we return nothing
+  return null;
 };
 
 export default DeviceRow;

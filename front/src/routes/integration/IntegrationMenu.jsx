@@ -35,41 +35,47 @@ const IntegrationMenu = connect(
         <Text id="integration.root.menu.communication" />
       </Link>
 
-      <Link
-        activeClassName="active"
-        onClick={refreshIntegrations('calendar')}
-        href="/dashboard/integration/calendar"
-        class="list-group-item list-group-item-action d-flex align-items-center"
-      >
-        <span class="icon mr-3">
-          <i class="fe fe-calendar" />
-        </span>
-        <Text id="integration.root.menu.calendar" />
-      </Link>
+      {false && (
+        <Link
+          activeClassName="active"
+          onClick={refreshIntegrations('calendar')}
+          href="/dashboard/integration/calendar"
+          class="list-group-item list-group-item-action d-flex align-items-center"
+        >
+          <span class="icon mr-3">
+            <i class="fe fe-calendar" />
+          </span>
+          <Text id="integration.root.menu.calendar" />
+        </Link>
+      )}
 
-      <Link
-        activeClassName="active"
-        onClick={refreshIntegrations('music')}
-        href="/dashboard/integration/music"
-        class="list-group-item list-group-item-action d-flex align-items-center"
-      >
-        <span class="icon mr-3">
-          <i class="fe fe-music" />
-        </span>
-        <Text id="integration.root.menu.music" />
-      </Link>
+      {false && (
+        <Link
+          activeClassName="active"
+          onClick={refreshIntegrations('music')}
+          href="/dashboard/integration/music"
+          class="list-group-item list-group-item-action d-flex align-items-center"
+        >
+          <span class="icon mr-3">
+            <i class="fe fe-music" />
+          </span>
+          <Text id="integration.root.menu.music" />
+        </Link>
+      )}
 
-      <Link
-        activeClassName="active"
-        onClick={refreshIntegrations('health')}
-        href="/dashboard/integration/health"
-        class="list-group-item list-group-item-action d-flex align-items-center"
-      >
-        <span class="icon mr-3">
-          <i class="fe fe-heart" />
-        </span>
-        <Text id="integration.root.menu.health" />
-      </Link>
+      {false && (
+        <Link
+          activeClassName="active"
+          onClick={refreshIntegrations('health')}
+          href="/dashboard/integration/health"
+          class="list-group-item list-group-item-action d-flex align-items-center"
+        >
+          <span class="icon mr-3">
+            <i class="fe fe-heart" />
+          </span>
+          <Text id="integration.root.menu.health" />
+        </Link>
+      )}
 
       <Link
         activeClassName="active"
@@ -83,17 +89,19 @@ const IntegrationMenu = connect(
         <Text id="integration.root.menu.weather" />
       </Link>
 
-      <Link
-        activeClassName="active"
-        onClick={refreshIntegrations('navigation')}
-        href="/dashboard/integration/navigation"
-        class="list-group-item list-group-item-action d-flex align-items-center"
-      >
-        <span class="icon mr-3">
-          <i class="fe fe-navigation" />
-        </span>
-        <Text id="integration.root.menu.navigation" />
-      </Link>
+      {false && (
+        <Link
+          activeClassName="active"
+          onClick={refreshIntegrations('navigation')}
+          href="/dashboard/integration/navigation"
+          class="list-group-item list-group-item-action d-flex align-items-center"
+        >
+          <span class="icon mr-3">
+            <i class="fe fe-navigation" />
+          </span>
+          <Text id="integration.root.menu.navigation" />
+        </Link>
+      )}
     </div>
   );
 });

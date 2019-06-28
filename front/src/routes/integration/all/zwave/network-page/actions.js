@@ -1,5 +1,8 @@
-import { RequestStatus } from '../../../../../utils/consts';
 import vis from 'vis';
+import get from 'get-value';
+
+import { RequestStatus } from '../../../../../utils/consts';
+import { ERROR_MESSAGES } from '../../../../../../../server/utils/constants';
 
 function renderGraph(zwaveNodes) {
   const nodeData = zwaveNodes.map(node => ({
@@ -54,9 +57,16 @@ const actions = store => ({
       });
       renderGraph(zwaveNodesNeighbors);
     } catch (e) {
-      store.setState({
-        zwaveGetNeighborsStatus: RequestStatus.Error
-      });
+      const responseMessage = get(e, 'response.data.message');
+      if (responseMessage === ERROR_MESSAGES.SERVICE_NOT_CONFIGURED) {
+        store.setState({
+          zwaveGetNeighborsStatus: RequestStatus.ServiceNotConfigured
+        });
+      } else {
+        store.setState({
+          zwaveGetNeighborsStatus: RequestStatus.Error
+        });
+      }
     }
   }
 });

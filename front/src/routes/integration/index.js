@@ -12,6 +12,10 @@ class Integration extends Component {
     this.props.getIntegrations();
   }
 
+  componentDidUpdate() {
+    this.props.getIntegrations();
+  }
+
   render({}, {}) {
     return <IntegrationPage />;
   }

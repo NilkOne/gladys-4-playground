@@ -6,7 +6,7 @@ import NetworkTab from './NetworkTab';
 import integrationConfig from '../../../../../config/integrations';
 
 @connect(
-  'user,zwaveNodesNeighbors',
+  'user,zwaveNodesNeighbors,zwaveGetNeighborsStatus',
   actions
 )
 class ZwaveNodePage extends Component {
@@ -16,10 +16,10 @@ class ZwaveNodePage extends Component {
     this.props.getNeighbors();
   }
 
-  render({ user, zwaveNodesNeighbors }, {}) {
+  render(props, {}) {
     return (
-      <ZwavePage integration={integrationConfig[user.language].zwave}>
-        <NetworkTab zwaveNodesNeighbors={zwaveNodesNeighbors} />
+      <ZwavePage integration={integrationConfig[props.user.language].zwave}>
+        <NetworkTab {...props} />
       </ZwavePage>
     );
   }

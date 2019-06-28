@@ -4,7 +4,7 @@ const { formatResults } = require('./lib/formatResults');
 const { Error400 } = require('../../utils/httpErrors');
 const { ERROR_MESSAGES } = require('../../utils/constants');
 
-const DARK_SKY_API_KEY = 'DARK_SKY_API_KEY';
+const DARKSKY_API_KEY = 'DARKSKY_API_KEY';
 
 module.exports = function DarkSkyService(gladys, serviceId) {
   const { default: axios } = require('axios');
@@ -18,7 +18,7 @@ module.exports = function DarkSkyService(gladys, serviceId) {
    */
   async function start() {
     logger.info('Starting Dark Sky service');
-    darkSkyApiKey = await gladys.variable.getValue(DARK_SKY_API_KEY, serviceId);
+    darkSkyApiKey = await gladys.variable.getValue(DARKSKY_API_KEY, serviceId);
     if (!darkSkyApiKey) {
       throw new ServiceNotConfiguredError('Dark Sky Service not configured');
     }

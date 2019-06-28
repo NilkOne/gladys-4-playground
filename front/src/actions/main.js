@@ -20,6 +20,11 @@ function createActions(store) {
         showDropDown: !state.showDropDown
       });
     },
+    toggleCollapsedMenu(state) {
+      store.setState({
+        showCollapsedMenu: !state.showCollapsedMenu
+      });
+    },
     async checkSession(state) {
       if (isUrlInArray(state.currentUrl, OPEN_PAGES)) {
         return null;

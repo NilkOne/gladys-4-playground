@@ -1,4 +1,5 @@
 const logger = require('../../../../utils/logger');
+const { ServiceNotConfiguredError } = require('../../../../utils/coreErrors');
 
 /**
  * @description Getting Z-Wave informations.
@@ -7,6 +8,9 @@ const logger = require('../../../../utils/logger');
  * zwave.getInfos();
  */
 function getInfos() {
+  if (!this.connected) {
+    throw new ServiceNotConfiguredError('ZWAVE_DRIVER_NOT_RUNNING');
+  }
   logger.debug(`Zwave : Getting informations...`);
   const info = {
     // returns controller's node id
@@ -26,6 +30,7 @@ function getInfos() {
     // return send queue count
     send_queue_count: this.zwave.getSendQueueCount(),
   };
+
   return info;
 }
 

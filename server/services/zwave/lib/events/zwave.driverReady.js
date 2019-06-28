@@ -8,6 +8,7 @@ const logger = require('../../../../utils/logger');
  */
 function driverReady(homeId) {
   logger.debug(`Zwave : Driver is ready. homeId = ${homeId}`);
+  this.scanInProgress = true;
 }
 
 module.exports = {

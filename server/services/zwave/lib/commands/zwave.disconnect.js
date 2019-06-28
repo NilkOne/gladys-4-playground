@@ -8,6 +8,7 @@ const logger = require('../../../../utils/logger');
 function disconnect() {
   logger.debug(`Zwave : Disconnecting...`);
   this.zwave.disconnect();
+  this.connected = false;
 }
 
 module.exports = {

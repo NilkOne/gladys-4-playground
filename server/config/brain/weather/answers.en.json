@@ -1,11 +1,35 @@
 [
   {
-    "label": "weather.get.success.sunny",
-    "answers": ["Weather is sunny and temperature outside is {{ temperature }} {{ units }}."]
+    "label": "weather.get.success.snow",
+    "answers": ["It's snowing outside and the temperature is {{ temperature }} {{ units }}."]
   },
   {
-    "label": "weather.get.success.raining",
+    "label": "weather.get.success.rain",
     "answers": ["It's raining and temperature outside is {{ temperature }} {{ units }}."]
+  },
+  {
+    "label": "weather.get.success.clear",
+    "answers": ["It's a clear day today. Temperature outside is {{ temperature }} {{ units }}."]
+  },
+  {
+    "label": "weather.get.success.cloud",
+    "answers": ["It's cloudy outside and temperature is {{ temperature }} {{ units }}."]
+  },
+  {
+    "label": "weather.get.success.fog",
+    "answers": ["Foggy day today. Temperature outside is {{ temperature }} {{ units }}."]
+  },
+  {
+    "label": "weather.get.success.sleet",
+    "answers": ["Temperature outside is {{ temperature }} {{ units }}, with freezing rain and sleet."]
+  },
+  {
+    "label": "weather.get.success.wind",
+    "answers": ["Windy day today. Temperature outside is {{ temperature }} {{ units }}."]
+  },
+  {
+    "label": "weather.get.success.unknown",
+    "answers": ["Temperature outside is {{ temperature }} {{ units }}."]
   },
   {
     "label": "weather.get.fail",
@@ -14,5 +38,9 @@
   {
     "label": "weather.get.fail.not-configured",
     "answers": ["You need to configure DarkSky API in the Integration tab before using this feature."]
+  },
+  {
+    "label": "weather.get.fail.no-house",
+    "answers": ["You need to first configure your house and its location in parameters."]
   }
 ]

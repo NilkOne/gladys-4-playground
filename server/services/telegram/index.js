@@ -1,12 +1,13 @@
 const logger = require('../../utils/logger');
-const { EVENTS } = require('../../utils/constants');
+const MessageHandler = require('./lib');
+const TelegramControllers = require('./api/telegram.controller');
 
 module.exports = function TelegramService(gladys, serviceId) {
   // See https://github.com/yagop/node-telegram-bot-api/issues/540
   process.env.NTBA_FIX_319 = '1';
   process.env.NTBA_FIX_350 = '1';
   const TelegramBot = require('node-telegram-bot-api');
-  let bot;
+  const messageHandler = new MessageHandler(gladys, TelegramBot, serviceId);
   /**
    * @public
    * @description This function starts the TelegramService
@@ -19,26 +20,7 @@ module.exports = function TelegramService(gladys, serviceId) {
     if (!token) {
       throw new Error('No telegram api token found. Not starting telegram service');
     }
-    bot = new TelegramBot(token, { polling: true });
-    bot.on('error', (e) => {
-      throw e;
-    });
-    bot.on('message', async (msg) => {
-      logger.debug(`new message from telegram, ${msg.text}`);
-      const telegramUserId = msg.from.id;
-      const user = await gladys.user.getByTelegramUserId(telegramUserId);
-
-      const message = {
-        source: 'telegram',
-        source_user_id: telegramUserId,
-        user_id: user.id,
-        user,
-        language: user.language,
-        date: msg.date,
-        text: msg.text,
-      };
-      gladys.event.emit(EVENTS.MESSAGE.NEW, message);
-    });
+    await messageHandler.connect(token);
   }
 
   /**
@@ -49,30 +31,13 @@ module.exports = function TelegramService(gladys, serviceId) {
    */
   async function stop() {
     logger.log('stopping telegram service');
+    await messageHandler.disconnect();
   }
 
   return Object.freeze({
     start,
     stop,
-    message: {
-      send: (chatId, message, options) => {
-        logger.debug(`Sending Telegram message to user with chatId = ${chatId}.`);
-        const telegramOptions = {};
-        if (options && options.suggestion) {
-          telegramOptions.reply_markup = {
-            one_time_keyboard: true,
-            keyboard: options.suggestion,
-          };
-        }
-        bot.sendMessage(chatId, message.text, telegramOptions);
-        if (message.file) {
-          const fileOpts = {
-            filename: 'image',
-            contentType: 'image/jpg',
-          };
-          bot.sendPhoto(chatId, Buffer.from(message.file.substr(17), 'base64'), fileOpts);
-        }
-      },
-    },
+    message: messageHandler,
+    controllers: TelegramControllers(messageHandler),
   });
 };

@@ -6,18 +6,19 @@ import NodeTab from './NodeTab';
 import integrationConfig from '../../../../../config/integrations';
 
 @connect(
-  'user,zwaveNodes',
+  'session,user,zwaveDevices,houses,getZwaveDevicesStatus',
   actions
 )
 class ZwaveNodePage extends Component {
   componentWillMount() {
-    this.props.getNodes();
+    this.props.getZWaveDevices(20, 0);
+    this.props.getHouses();
   }
 
-  render({ user, zwaveNodes }, {}) {
+  render(props, {}) {
     return (
-      <ZwavePage integration={integrationConfig[user.language].zwave}>
-        <NodeTab zwaveNodes={zwaveNodes} />
+      <ZwavePage integration={integrationConfig[props.user.language].zwave}>
+        <NodeTab {...props} />
       </ZwavePage>
     );
   }

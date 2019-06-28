@@ -18,7 +18,6 @@ function createActions(store) {
       });
       try {
         const options = {
-          service: 'rtsp-camera',
           order_dir: state.getRtspCameraOrderDir || 'asc',
           take,
           skip
@@ -26,7 +25,7 @@ function createActions(store) {
         if (state.rtspCameraSearch && state.rtspCameraSearch.length) {
           options.search = state.rtspCameraSearch;
         }
-        const rtspCamerasReceived = await state.httpClient.get('/api/v1/device', options);
+        const rtspCamerasReceived = await state.httpClient.get('/api/v1/service/rtsp-camera/device', options);
         // find camera url
         rtspCamerasReceived.forEach(camera => {
           const cameraUrlParam = camera.params.find(param => param.name === 'CAMERA_URL');

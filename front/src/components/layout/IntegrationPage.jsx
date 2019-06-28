@@ -1,6 +1,6 @@
 import { Link } from 'preact-router/match';
 
-const ZwavePage = ({ children, ...props }) => (
+const IntegrationPage = ({ children, ...props }) => (
   <div class="page">
     <div class="page-main">
       <div class="my-3 my-md-5">
@@ -37,9 +37,7 @@ const ZwavePage = ({ children, ...props }) => (
               </div>
             </div>
             <div class="col-lg-9">
-              <div class="card">
-                <div class="card-body">{children}</div>
-              </div>
+              <div class="card">{children}</div>
             </div>
           </div>
         </div>
@@ -48,4 +46,4 @@ const ZwavePage = ({ children, ...props }) => (
   </div>
 );
 
-export default ZwavePage;
+export default IntegrationPage;

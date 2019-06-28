@@ -1,4 +1,5 @@
 const logger = require('../../../../utils/logger');
+const { ServiceNotConfiguredError } = require('../../../../utils/coreErrors');
 
 /**
  * @description Getting neighbors of all nodes.
@@ -7,6 +8,9 @@ const logger = require('../../../../utils/logger');
  * zwave.getNodeNeighbors();
  */
 function getNodeNeighbors() {
+  if (!this.connected) {
+    throw new ServiceNotConfiguredError('ZWAVE_DRIVER_NOT_RUNNING');
+  }
   logger.debug(`Zwave : Getting node neighbors...`);
   const nodeIds = Object.keys(this.nodes);
   const nodes = nodeIds.map((nodeId) => {

@@ -38,7 +38,8 @@ class Session {
 
   connect() {
     console.log('Trying to connect...');
-    const ws = new WebSocket(config.webSocketUrl);
+    const websocketUrl = config.webSocketUrl || window.location.origin.replace('http', 'ws');
+    const ws = new WebSocket(websocketUrl);
     ws.onopen = () => {
       console.log('Connected!');
       this.websocketConnected = true;

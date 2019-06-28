@@ -125,12 +125,15 @@ function createActions(store) {
         if (errored) {
           throw new Error();
         }
-        data.birthdate = `${data.birthdateYear}-${data.birthdateMonth}-${data.birthdateDay}`;
+        data.birthdate = new Date(`${data.birthdateYear}-${data.birthdateMonth}-${data.birthdateDay}`);
         delete data.birthdateYear;
         delete data.birthdateMonth;
         delete data.birthdateDay;
         if (state.cropper) {
-          data.picture = await getCropperBase64Image(state.cropper);
+          const profilePicture = await getCropperBase64Image(state.cropper);
+          if (profilePicture) {
+            data.picture = profilePicture;
+          }
         }
         await state.httpClient.patch('/api/v1/me', data);
         if (data.picture) {

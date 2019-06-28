@@ -271,6 +271,10 @@ const WEBSOCKET_MESSAGE_TYPES = {
     DOWNLOAD_FINISHED: 'upgrade.download-finished',
     DOWNLOAD_FAILED: 'upgrade.download-failed',
   },
+  ZWAVE: {
+    NODE_READY: 'zwave.node-ready',
+    SCAN_COMPLETE: 'zwave.scan-complete',
+  },
 };
 
 const DASHBOARD_TYPE = {

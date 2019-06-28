@@ -64,7 +64,7 @@ function Gladys(params = {}) {
   const scheduler = new Scheduler(event);
   const system = new System(db.sequelize, event);
   const trigger = new TriggerManager(event, stateManager, scene);
-  const weather = new Weather(service, event, message);
+  const weather = new Weather(service, event, message, house);
   const gateway = new Gateway(variable, event, system, db.sequelize, config);
 
   const gladys = {

@@ -8,6 +8,7 @@ jsdoc
 build
 static
 gladys-backups
+qemu-*
 
 # VSCode
 .vscode

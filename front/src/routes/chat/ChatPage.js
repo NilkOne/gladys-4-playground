@@ -1,3 +1,4 @@
+import { Text } from 'preact-i18n';
 import { connect } from 'unistore/preact';
 import actions from '../../actions/message';
 import ChatItems from './ChatItems';
@@ -37,19 +38,22 @@ const IntegrationPage = connect(
             <div class="col-lg-4">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">What can you ask?</h3>
+                  <h3 class="card-title">
+                    <Text id="chat.whatCanYouAsk" />
+                  </h3>
                 </div>
                 <div class="card-body">
                   <ul>
-                    <li>"Turn on the Light in the living room"</li>
-                    <li>"What's the weather like tomorrow?"</li>
-                    <li>"Set an alarm for tomorrow 8:30AM"</li>
-                    <li>"Play some music in the kitchen"</li>
-                    <li>"What's the temperature in the bathroom?"</li>
+                    <li>
+                      "<Text id="chat.whatsTheWeatherLike" />"
+                    </li>
+                    <li>
+                      "<Text id="chat.showCameraImage" />"
+                    </li>
+                    <li>
+                      "<Text id="chat.whatsTheTemperatureKitchen" />"
+                    </li>
                   </ul>
-                  <p>
-                    Full list of commands <a href="">here</a>.
-                  </p>
                 </div>
               </div>
             </div>
